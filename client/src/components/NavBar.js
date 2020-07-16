@@ -22,10 +22,10 @@ const handleLogout = (props) => {
     }
 
 function NavBar (props) {
-    console.log(props.isLoggedIn, props.userId);
-    
     const Buttons = props.isLoggedIn ? (
             <div>
+                <li><Link to="/addpost">Add Post!</Link></li>
+                <li><Link to="/followpage">Follow</Link></li>
                 <li><Link to={{ pathname: `/profile/${props.userId}` }}>Profile</Link></li>
                 <li><a onClick={() => handleLogout(props)}>Logout</a></li>
             </div>
@@ -65,15 +65,3 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar));
-
-
-// componentDidUpdate() {
-//     Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
-//         .then(res => {
-//             console.log(res.data);
-//             this.setState({
-//                 isLoggedIn: res.data,
-//             })
-//         })
-//         .catch(err => console.log(err));
-// }

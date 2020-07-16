@@ -13,6 +13,32 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    followers: [{
+        userId: {
+            type: String,
+        },
+        userName: {
+            type: String,
+        }
+    }],
+    following: [{
+        userId: {
+            type: String,
+        },
+        userName: {
+            type: String,
+        }
+    }],
+    followersCount: {
+        type: Number,
+        required: true,
+        integer: true,
+    },
+    followingCount: {
+        type: Number,
+        required: true,
+        integer: true,
     }
 }, { timestamps: true });
 

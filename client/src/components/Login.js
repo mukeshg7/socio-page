@@ -10,7 +10,6 @@ class Login extends Component {
     }
     componentDidMount() {
         const isLoggedIn = this.props.isLoggedIn;
-        console.log('LoginMount: ', isLoggedIn)
         if(isLoggedIn) {
             const userId = this.props.userId;
             this.props.history.push({
@@ -52,17 +51,22 @@ class Login extends Component {
         return (
             <div className="container">
                 <h1 className="center">Login</h1>
-                <form className="col s12" onSubmit={this.handleSubmit}>
-                    <div className="input-field">
-                        <label htmlFor="email">Email: </label>
-                        <input type="email" id="email" onChange={this.handleChange} required></input>
-                    </div>
-                    <div className="input-field ">
-                        <label htmlFor="password">Password: </label>
-                        <input type="password" id="password" onChange={this.handleChange} required></input>
-                    </div>
-                    <button className="waves-effect waves-light btn">Login</button>
-                </form>
+                <div className="col s4">
+                    <form  onSubmit={this.handleSubmit}>
+                    <div className="container">
+                        <div className="input-field col s4">
+                            <label htmlFor="email">Email: </label>
+                            <input type="email" id="email" onChange={this.handleChange} required></input>
+                        </div></div>
+                        <div className="container">
+                        <div className="input-field col s4">
+                            <label htmlFor="password">Password: </label>
+                            <input type="password" id="password" onChange={this.handleChange} required></input>
+                        </div></div>
+                        <div className="container center">
+                        <button className="waves-effect waves-light btn">Login</button></div>
+                    </form>
+                </div>
             </div>
         )
     }

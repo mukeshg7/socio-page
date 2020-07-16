@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Profile from './components/Profile'
 import AddPost from './components/AddPost'
+import FollowPage from './components/FollowPage'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signup" component={Signup} />
         <Route path="/profile/:user_id" component={Profile} />
         <Route path="/addpost" component={AddPost} />
+        <Route path='/followpage' component={FollowPage} />
       </div>
     </BrowserRouter>
   );

@@ -2,19 +2,23 @@ import React, { Component } from 'react'
 import Axios from 'axios'
 import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
+import Post from './Post'
 
 class Feed extends Component {
     state = {
         posts: [],
         isLoggedIn: false,
+        userName: this.props.userName,
+        userId: this.props.userId,
     }
     componentDidMount() {
         Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
             .then(res => {
                 const isLoggedIn = res.data.isLoggedIn;
-                console.log(isLoggedIn);
                 this.setState({
-                    isLoggedIn
+                    isLoggedIn,
+                    userName: this.props.userName,
+                    userId: this.props.userId,
                 })
                 if(isLoggedIn) {
                     this.props.loginUser(res.data.userId);
@@ -31,22 +35,12 @@ class Feed extends Component {
             })
             .catch(err => console.log(err));
     }
-    handleLike = () => {
-
-    }
     render() {
         const posts = this.state.posts;
         const postCard = posts.length ? (
-            posts.map(post => {
+            posts.map((post) => {
                 return (
-                        <div className="post card" key={post._id}>
-                            <div className="card-content">
-                                <span className="card-title">By | {post.userName}</span>
-                                <span className="right">{post.createdAt}</span>
-                                <p>{post.body}</p>
-                                <button onClick={this.handleLike} className="waves-effect waves-light btn-small"><i className="fas fa-fire-alt"></i></button>
-                            </div>
-                        </div>
+                        <Post post={post} userName={this.state.userName} userId={this.state.userId} />
                     )
                 })
             ) : (
@@ -75,4 +69,12 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Feed);
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+        userId: state.userId,
+        userName: state.userName
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);

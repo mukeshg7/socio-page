@@ -6,7 +6,10 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const session = require('express-session');
 const User = require('./models/user');
-const Post = require('./models/post')
+const Post = require('./models/post');
+const e = require('express');
+const { response } = require('express');
+const ObjectId = require('mongodb').ObjectID;
 
 const app = express();
 
@@ -55,6 +58,68 @@ app.get('/feed', (req, res) => {
         .catch(err => console.log(err));
 })
 
+app.post('/like', (req, res) => {
+    const postId = req.body.postId;
+    const userId = req.body.userId;
+
+    Post.findById(postId)
+        .then(response => {
+            if(response) {
+                Post.findOne( {$and: [{ '_id': ObjectId(postId)} , {'likedUserIds': {$elemMatch: { 'userId':  userId }}}]})
+                    .then(post => {console.log(post);
+                        if(post) {
+                            Post.updateOne({ _id: postId }, { $pull: { likedUserIds:  { userId } } ,  $inc: { likes: -1 }} )    //Revome
+                                .then(result => {
+                                    res.status(200).send({ new: response.likes-1});
+                                })
+                                .catch(err => console.log(err));
+                        } else {
+                            Post.updateOne( { _id: postId }, { $push: { likedUserIds:  { userId } },  $inc: { likes: 1 }})    //Revome
+                                .then(result => {
+                                    res.status(200).send({ new: response.likes+1});
+                                })
+                                .catch(err => console.log(err));
+                        }
+                    })
+                    .catch(err => console.log(err));
+            } else {
+                res.status(203).send("Post not available.");
+            }
+        })
+        .catch(err => console.log(err));
+})
+
+app.get('/followpage', (req, res) => {
+    if(req.session.user) {
+        const userId = req.session.user._id;
+        const userName = req.session.user.userName;
+        User.find({ $and: [ {'followers.userId': { $ne: userId } }, {'_id': {$ne: userId } } ]}, {'_id': 1, 'userName': 1})
+            .then(users => {console.log(users);
+                res.status(200).send({users: users, userName: userName, userId: userId});
+            })
+            .catch(err => console.log(err));
+        
+    } else {
+        res.status(203).send("User not LoggedIn!")
+    }
+})
+
+app.post('/follow', (req, res) => {
+    const userId = req.session.user._id;
+    const userName = req.session.user.userName;
+    const followUserId = req.body.followUserId;
+    const followUserName = req.body.followUserName;
+    User.updateOne({ '_id': followUserId }, { $push: { followers: { userId: userId, userName: userName } }, $inc: { followersCount: 1 } })
+        .then(result => {
+            User.updateOne({ '_id': userId }, { $push: { following: { userId: followUserId, userName: followUserName } }, $inc: { followingCount: 1 } })
+                .then(response => {
+                    res.status(200).send('Sussessfully following!');
+                })
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+})
+
 app.post('/login', checkLoginLogStatus, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
@@ -90,8 +155,20 @@ app.get('/logout', (req, res) => {
 
 app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
     const id = req.params.id.trim();
-    if(req.session.user._id == id) {
-        res.status(200).send({ userName: req.session.user.userName, email: req.session.user.email});
+    if(req.session.user) {
+        if(req.session.user._id === id) {
+            res.status(200).send({ userName: req.session.user.userName, email: req.session.user.email, 
+                followersCount: req.session.user.followersCount, followingCount: req.session.user.followingCount, 
+                        isThisUser: true});
+        } else {
+            User.findById(id, 'userName email followersCount followingCount')
+                .then(user => {
+                    res.status(200).send({ userName: user.userName, email: user.email, 
+                        followersCount: user.followersCount, followingCount: user.followingCount, 
+                                isThisUser: false, loggedInUser: req.session.user._id});
+                })
+                .catch(err => console.log(err));
+        }
     } else {
         res.status(203).send("Not authorized");
     }
@@ -100,8 +177,6 @@ app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
 
 app.post('/addpost', (req, res) => {
     const post = req.body;
-    console.log(post);
-    console.log(req.session.user);
     const newPost = new Post(post);
     newPost.save()
         .then(result => {

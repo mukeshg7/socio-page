@@ -10,6 +10,7 @@ class AddPost extends Component {
         body: "",
         likes: 0,
         isLoggedIn: false,
+        userId: "",
     }
     componentDidMount() {
         Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
@@ -19,6 +20,7 @@ class AddPost extends Component {
                 this.setState({
                     isLoggedIn,
                     userName: res.data.userName,
+                    userId: res.data.userId,
                 })
                 if(isLoggedIn) {
                     this.props.loginUser(res.data.userId, res.data.userName);
@@ -39,6 +41,8 @@ class AddPost extends Component {
             body: this.state.body,
             likes: this.state.likes,
             userName: this.state.userName,
+            userId: this.state.userId,
+            likedUserIds: [],
         }
         Axios.post('http://localhost:3000/addpost', post, {withCredentials: true})
             .then(res => {
@@ -54,10 +58,10 @@ class AddPost extends Component {
             <div>
                 <h1 className="center">{this.state.userName} you can add your post here!</h1>
                 
-                <div className="col s8">
-                    <div className="input-field">
+                <div className="row">
+                    <div className="input-field col s12">
                         <label htmlFor="post">Post: </label>
-                        <textarea onChange={this.handleBody} className="materialize-textarea" id="post" required></textarea>
+                        <textarea onChange={this.handleBody} className="materialize-textarea" id="post" data-length="120" required />
                         <button onClick={this.handlePost} className="waves-effect waves-light btn">Post!</button>
                     </div>
                 </div>

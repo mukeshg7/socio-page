@@ -14,7 +14,16 @@ const postSchema = new Schema({
     userName: {
         type: String,
         required: true,
-    }
+    },
+    userId: {
+        type: String,
+        required: true,
+    },
+    likedUserIds: [{
+        userId: {
+            type: String
+        }
+    }]
     
 }, { timestamps: true });
 
