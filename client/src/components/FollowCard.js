@@ -7,29 +7,51 @@ class FollowCard extends Component {
         buttonText: 'Follow',
         isDisable: false
     }
-    handleFollow = () => {
-        const data = {
-            FollowUserId: this.props.user._id,
-            FollowUserName: this.props.user.userName,
+
+    handleFollowUnFollow = () => {
+        this.setState({
+            isDisable: true,
+        })
+        if(this.state.buttonText === 'Follow') {
+            const data = {
+                followUserId: this.props.user._id,
+                followUserName: this.props.user.userName,
+            }
+            Axios.post('http://localhost:3000/follow', data, {withCredentials: true})
+                .then(res => {
+                    if(res.status === 200) {
+                        this.setState({
+                            buttonText: 'Following',
+                            isDisable: false,
+                        })
+                    }
+                })
+                .catch(err => console.log(err));
+        } else {
+            const data = {
+                unFollowUserId: this.props.user._id,
+                unFollowUserName: this.props.user.userName,
+            };
+            Axios.post('http://localhost:3000/unfollow', data, {withCredentials: true})
+                .then(res => {
+                    if(res.status === 200) {
+                        this.setState({
+                            buttonText: 'Follow',
+                            isDisable: false,
+                        })
+                    }
+                })
+                .catch(err => console.log(err));
         }
-        Axios.post('http://localhost:3000/follow', data, {withCredentials: true})
-            .then(res => {
-                if(res.status === 200) {
-                    this.setState({
-                        buttonText: 'Following',
-                        isDisable: true,
-                    })
-                }
-            })
-            .catch(err => console.log(err));
     }
+
     render() {
         const user = this.props.user;
         return (
             <div className="post card">
                 <div className="card-content">
                     <li><Link to={{ pathname: `/profile/${this.props.user._id}` }}><span className="card-title">{user.userName}</span></Link></li>
-                    <button onClick={this.handleFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
+                    <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
                 </div>
             </div>
         )

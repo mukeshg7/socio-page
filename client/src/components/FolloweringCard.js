@@ -36,8 +36,8 @@ class FolloweringCard extends Component {
         })
         if(this.state.buttonText === 'Follow') {
             const data = {
-                FollowUserId: this.props.user.userId,
-                FollowUserName: this.props.user.userName,
+                followUserId: this.props.user.userId,
+                followUserName: this.props.user.userName,
             }
             Axios.post('http://localhost:3000/follow', data, {withCredentials: true})
                 .then(res => {
