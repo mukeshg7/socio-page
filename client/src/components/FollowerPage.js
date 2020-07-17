@@ -6,18 +6,20 @@ import FolloweringCard from './FolloweringCard'
 
 class FollowerPage extends Component {
     state = {
-        users: [], 
+        followerUsers: [], 
+        userIdOfThisPage: this.props.history.location.pathname.slice(10),
         userId: this.props.userId,
         userName: this.props.userName,
         isLoggedIn: false,
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/follower', { withCredentials: true })
+        let path = this.props.history.location.pathname.slice(10);
+        Axios.get(`http://localhost:3000/follower/${path}`, { withCredentials: true })
             .then(res => {
                 if(res.status === 200) {
                     this.props.loginUser(res.data.userId, res.data.userName);
                     this.setState({
-                        users: res.data.users,
+                        followerUsers: res.data.followerUsers,
                         isLoggedIn: true,
                     });
                 } else {
@@ -26,21 +28,21 @@ class FollowerPage extends Component {
             })
     }
     render() {
-        const users = this.state.users;
+        const followerUsers = this.state.followerUsers;
         const body = this.state.isLoggedIn ? (
-            users.map((user) => {
+            followerUsers.map((user) => {
                 return (
                     <div className="col s4">
-                        <FolloweringCard user={user} />
+                        <FolloweringCard user={user} userId={this.state.userId}/>
                     </div>
                 )
             })
         ) : (
-            <div><h4>Please Login/Signup to follow people!</h4></div>
+            <div><h4>Please Login/Signup to view people!</h4></div>
         );
         return (
             <div>
-                <h4 className="center">Follow Suggestion!</h4>
+                <h4 className="center">People Following {this.state.userName}</h4>
                 <div className="container">
                     <div className="row">{body}</div>
                 </div>
@@ -60,6 +62,7 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
         userId: state.userId,
+        userName: state.userName,
     }
 }
 

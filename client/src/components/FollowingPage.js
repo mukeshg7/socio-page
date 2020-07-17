@@ -33,7 +33,7 @@ class FollowingPage extends Component {
             followingUsers.map((user) => {
                 return (
                     <div className="col s4">
-                        <FolloweringCard user={user} />
+                        <FolloweringCard user={user} userId={this.state.userId}/>
                     </div>
                 )
             })

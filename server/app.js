@@ -120,6 +120,24 @@ app.post('/follow', (req, res) => {
         .catch(err => console.log(err));
 })
 
+app.post('/unfollow', (req, res) => {
+    const userId = req.session.user._id;
+    const userName = req.session.user.userName;
+    const unFollowUserId = req.body.unFollowUserId;
+    const unFollowUserName = req.body.unFollowUserName;
+    console.log(userId, userName);
+    console.log(unFollowUserId, unFollowUserName);
+    User.updateOne({ '_id': unFollowUserId }, { $pull: { followers: { userId: userId } }, $inc: { followersCount: -1 } })
+        .then(result => {
+            User.updateOne({ '_id': userId }, { $pull: { following: { userId: unFollowUserId } }, $inc: { followingCount: -1 } })
+                .then(response => {
+                    res.status(200).send('Sussessfully unfollowed!');
+                })
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+})
+
 app.post('/login', checkLoginLogStatus, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
@@ -156,6 +174,15 @@ app.get('/following/:id', checkProfileLogStatus, (req, res) => {
     User.findOne({ '_id': id }, {following: 1})
         .then(followingUsers => {
             res.status(200).send({userId: req.session.user._id, userName: req.session.user.userName, followingUsers: followingUsers.following});
+        })
+        .catch(err => console.log(err));
+})
+
+app.get('/follower/:id', checkProfileLogStatus, (req, res) => {
+    const id = req.params.id.trim();
+    User.findOne({ '_id': id }, {followers: 1})
+        .then(followerUsers => {
+            res.status(200).send({userId: req.session.user._id, userName: req.session.user.userName, followerUsers: followerUsers.followers});
         })
         .catch(err => console.log(err));
 })
