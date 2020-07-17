@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
+import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
 
@@ -11,7 +12,7 @@ class Profile extends Component {
         followingCount: 0,
         isThisUser: false,
     }
-    componentDidMount() {
+    componentDidMount() {console.log('profile');
         let path = this.props.history.location.pathname.slice(9);
         Axios.get(`http://localhost:3000/user/${path}`, {withCredentials: true})
             .then(res => {
@@ -26,7 +27,7 @@ class Profile extends Component {
                     if(this.state.isThisUser) {
                         this.props.loginUser(path);
                     } else {
-                        this.props.loginUser(res.data.loggedInUser);
+                        this.props.loginUser(res.data.loggedInUserId);
                     }
                 } else {
                     this.props.history.push({
@@ -40,6 +41,7 @@ class Profile extends Component {
 
     }
     render() {
+        const userIdOfThisPage = this.props.history.location.pathname.slice(9);
         const editButton = this.state.isThisUser ? (
                 <div>
                     <button onClick={this.handleEdit} className="waves-effect waves-light btn">Edit</button>
@@ -52,8 +54,8 @@ class Profile extends Component {
                 <h1>Profile Page</h1>
                 <h2>Hello { this.state.userName }</h2>
                 <p>Your Email-id: { this.state.email }</p>
-                <a href='#'>Followers: {this.state.followersCount}</a>
-                <a href='#'>Following: {this.state.followingCount}</a>
+                <Link to={{ pathname: `/follower/${userIdOfThisPage}` }}>Followers: {this.state.followersCount}</Link>
+                <Link to={{ pathname: `/following/${userIdOfThisPage}` }}>Following: {this.state.followingCount}</Link>
                 { editButton }
             </div>
         )

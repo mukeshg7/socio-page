@@ -8,6 +8,8 @@ import Signup from './components/Signup'
 import Profile from './components/Profile'
 import AddPost from './components/AddPost'
 import FollowPage from './components/FollowPage'
+import FollowerPage from './components/FollowerPage'
+import FollowingPage from './components/FollowingPage'
 
 function App() {
   return (
@@ -17,9 +19,11 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/profile/:user_id" component={Profile} />
+        <Route path="/profile/:userId" component={Profile} />
         <Route path="/addpost" component={AddPost} />
         <Route path='/followpage' component={FollowPage} />
+        <Route path='/follower/:userId' component={FollowerPage} />
+        <Route path='/following/:userId' component={FollowingPage} />
       </div>
     </BrowserRouter>
   );

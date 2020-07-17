@@ -46,7 +46,6 @@ class AddPost extends Component {
         }
         Axios.post('http://localhost:3000/addpost', post, {withCredentials: true})
             .then(res => {
-                console.log(res);
                 this.props.history.push({
                     pathname: '/'
                 })

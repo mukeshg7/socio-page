@@ -66,7 +66,7 @@ app.post('/like', (req, res) => {
         .then(response => {
             if(response) {
                 Post.findOne( {$and: [{ '_id': ObjectId(postId)} , {'likedUserIds': {$elemMatch: { 'userId':  userId }}}]})
-                    .then(post => {console.log(post);
+                    .then(post => {
                         if(post) {
                             Post.updateOne({ _id: postId }, { $pull: { likedUserIds:  { userId } } ,  $inc: { likes: -1 }} )    //Revome
                                 .then(result => {
@@ -94,7 +94,7 @@ app.get('/followpage', (req, res) => {
         const userId = req.session.user._id;
         const userName = req.session.user.userName;
         User.find({ $and: [ {'followers.userId': { $ne: userId } }, {'_id': {$ne: userId } } ]}, {'_id': 1, 'userName': 1})
-            .then(users => {console.log(users);
+            .then(users => {
                 res.status(200).send({users: users, userName: userName, userId: userId});
             })
             .catch(err => console.log(err));
@@ -151,26 +151,43 @@ app.get('/logout', (req, res) => {
     });
   })
 
+app.get('/following/:id', checkProfileLogStatus, (req, res) => {
+    const id = req.params.id.trim();
+    User.findOne({ '_id': id }, {following: 1})
+        .then(followingUsers => {
+            res.status(200).send({userId: req.session.user._id, userName: req.session.user.userName, followingUsers: followingUsers.following});
+        })
+        .catch(err => console.log(err));
+})
 
+app.get('/checkfollowstatus/:id', (req, res) => {
+    const id = req.params.id.trim();
+    const userId = req.session.user._id;
+    User.findOne({ $and: [{'_id': userId, following: { $elemMatch:{ userId: id } }}]})
+        .then(result => {
+            if(result) {
+                res.send({isFollowing: true});
+            } else {
+                res.send({isFollowing: false});
+            }
+        })
+        .catch(err => console.log(err));
+})
 
 app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
     const id = req.params.id.trim();
-    if(req.session.user) {
-        if(req.session.user._id === id) {
-            res.status(200).send({ userName: req.session.user.userName, email: req.session.user.email, 
-                followersCount: req.session.user.followersCount, followingCount: req.session.user.followingCount, 
-                        isThisUser: true});
-        } else {
-            User.findById(id, 'userName email followersCount followingCount')
-                .then(user => {
-                    res.status(200).send({ userName: user.userName, email: user.email, 
-                        followersCount: user.followersCount, followingCount: user.followingCount, 
-                                isThisUser: false, loggedInUser: req.session.user._id});
-                })
-                .catch(err => console.log(err));
-        }
+    if(req.session.user._id === id) {
+        res.status(200).send({ userName: req.session.user.userName, email: req.session.user.email, 
+            followersCount: req.session.user.followersCount, followingCount: req.session.user.followingCount, 
+                    isThisUser: true});
     } else {
-        res.status(203).send("Not authorized");
+        User.findById(id, 'userName email followersCount followingCount')
+            .then(user => {
+                res.status(200).send({ userName: user.userName, email: user.email, 
+                    followersCount: user.followersCount, followingCount: user.followingCount, 
+                            isThisUser: false, loggedInUserId: req.session.user._id});
+            })
+            .catch(err => console.log(err));
     }
 })
 
