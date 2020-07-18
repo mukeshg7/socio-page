@@ -12,7 +12,7 @@ class Profile extends Component {
         followingCount: 0,
         isThisUser: false,
     }
-    componentDidMount() {console.log('profile');
+    componentDidMount() {
         let path = this.props.history.location.pathname.slice(9);
         Axios.get(`http://localhost:3000/user/${path}`, {withCredentials: true})
             .then(res => {
