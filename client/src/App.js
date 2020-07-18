@@ -8,8 +8,6 @@ import Signup from './components/Signup'
 import Profile from './components/Profile'
 import AddPost from './components/AddPost'
 import FollowPage from './components/FollowPage'
-import FollowerPage from './components/FollowerPage'
-import FollowingPage from './components/FollowingPage'
 
 function App() {
   return (
