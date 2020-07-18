@@ -16,7 +16,7 @@ class AddPost extends Component {
         Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
             .then(res => {
                 const isLoggedIn = res.data.isLoggedIn;
-                console.log(res.data.userName);
+                
                 this.setState({
                     isLoggedIn,
                     userName: res.data.userName,
