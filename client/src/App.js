@@ -22,8 +22,6 @@ function App() {
         <Route path="/profile/:userId" component={Profile} />
         <Route path="/addpost" component={AddPost} />
         <Route path='/followpage' component={FollowPage} />
-        <Route path='/follower/:userId' component={FollowerPage} />
-        <Route path='/following/:userId' component={FollowingPage} />
       </div>
     </BrowserRouter>
   );

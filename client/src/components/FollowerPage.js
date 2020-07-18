@@ -7,21 +7,26 @@ import FolloweringCard from './FolloweringCard'
 class FollowerPage extends Component {
     state = {
         followerUsers: [], 
-        userIdOfThisPage: this.props.history.location.pathname.slice(10),
+        thisPageUserId: this.props.thisPageUserId,
         userId: this.props.userId,
         userName: this.props.userName,
-        isLoggedIn: false,
+        isLoggedIn: true,
+        message: 'Loading...'
     }
     componentDidMount() {
-        let path = this.props.history.location.pathname.slice(10);
+        let path = this.state.thisPageUserId;
         Axios.get(`http://localhost:3000/follower/${path}`, { withCredentials: true })
             .then(res => {
                 if(res.status === 200) {
-                    this.props.loginUser(res.data.userId, res.data.userName);
                     this.setState({
                         followerUsers: res.data.followerUsers,
                         isLoggedIn: true,
                     });
+                    if(this.state.followerUsers.length === 0) {
+                        this.setState({
+                            message: 'No Followers',
+                        });
+                    }
                 } else {
                     this.props.logoutUser();
                 }
@@ -29,7 +34,7 @@ class FollowerPage extends Component {
     }
     render() {
         const followerUsers = this.state.followerUsers;
-        const body = this.state.isLoggedIn ? (
+        const list = followerUsers.length ? (
             followerUsers.map((user) => {
                 return (
                     <div className="col s4">
@@ -38,11 +43,16 @@ class FollowerPage extends Component {
                 )
             })
         ) : (
+            <div><h4>{this.state.message}</h4></div>
+        );
+        const body = this.state.isLoggedIn ? (
+            <div>{list}</div>
+        ) : (
             <div><h4>Please Login/Signup to view people!</h4></div>
         );
         return (
             <div>
-                <h4 className="center">People Following {this.state.userName}</h4>
+                <h4 className="center">Followers {this.state.userName}</h4>
                 <div className="container">
                     <div className="row">{body}</div>
                 </div>

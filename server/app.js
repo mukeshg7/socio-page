@@ -58,6 +58,15 @@ app.get('/feed', (req, res) => {
         .catch(err => console.log(err));
 })
 
+app.get('/post/:id', checkProfileLogStatus, (req, res) => {
+    const id = req.params.id.trim();
+    Post.find({'userId': id})
+        .then(posts => {
+            res.status(200).send(posts)
+        })
+        .catch(err => console.log(err));
+})
+
 app.post('/like', (req, res) => {
     const postId = req.body.postId;
     const userId = req.body.userId;
@@ -203,19 +212,14 @@ app.get('/checkfollowstatus/:id', (req, res) => {
 
 app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
     const id = req.params.id.trim();
-    if(req.session.user._id === id) {
-        res.status(200).send({ userName: req.session.user.userName, email: req.session.user.email, 
-            followersCount: req.session.user.followersCount, followingCount: req.session.user.followingCount, 
-                    isThisUser: true});
-    } else {
-        User.findById(id, 'userName email followersCount followingCount')
-            .then(user => {
-                res.status(200).send({ userName: user.userName, email: user.email, 
-                    followersCount: user.followersCount, followingCount: user.followingCount, 
-                            isThisUser: false, loggedInUserId: req.session.user._id});
-            })
-            .catch(err => console.log(err));
-    }
+    
+    User.findById(id, 'userName email followersCount followingCount')
+        .then(user => {
+            res.status(200).send({ userId: req.session.user._id, userName: req.session.user.userName, 
+                thisPageUserName: user.userName, thisPageEmail: user.email, 
+                followersCount: user.followersCount, followingCount: user.followingCount});
+        })
+        .catch(err => console.log(err));
 })
 
 
