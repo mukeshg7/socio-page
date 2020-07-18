@@ -9,7 +9,8 @@ class Follow extends Component {
         users: [], 
         userId: this.props.userId,
         userName: this.props.userName,
-        isLoggedIn: false,
+        isLoggedIn: true,
+        message: 'Loading...'
     }
     componentDidMount() {
         Axios.get('http://localhost:3000/followpage', { withCredentials: true })
@@ -20,6 +21,11 @@ class Follow extends Component {
                         users: res.data.users,
                         isLoggedIn: true,
                     });
+                    if(this.state.users.length === 0) {
+                        this.setState({
+                            message: 'No Follow Suggestion!',
+                        })
+                    }
                 } else {
                     this.props.logoutUser();
                 }
@@ -27,7 +33,7 @@ class Follow extends Component {
     }
     render() {
         const users = this.state.users;
-        const body = this.state.isLoggedIn ? (
+        const list = users.length ? (
             users.map((user) => {
                 return (
                     <div className="col s4">
@@ -35,6 +41,11 @@ class Follow extends Component {
                     </div>
                 )
             })
+        ) : (
+            <div><h4>{this.state.message}</h4></div>
+        );
+        const body = this.state.isLoggedIn ? (
+            <div>{list}</div>
         ) : (
             <div><h4>Please Login/Signup to follow people!</h4></div>
         );
