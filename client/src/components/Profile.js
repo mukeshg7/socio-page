@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
+import {Link, withRouter} from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
 import UserPost from './UserPost'
@@ -22,8 +23,9 @@ class Profile extends Component {
         followersButton: false,
         followingButton: false,
         showPostButton: false,
+
     }
-    componentDidMount() {console.log('profile');
+    getData = () => {
         let path = this.props.history.location.pathname.slice(9);
         Axios.get(`http://localhost:3000/user/${path}`, {withCredentials: true})
             .then(res => {
@@ -36,6 +38,9 @@ class Profile extends Component {
                         thisPageEmail: res.data.thisPageEmail,
                         followersCount: res.data.followersCount,
                         followingCount: res.data.followingCount,
+                        followersButton: false,
+                        followingButton: false,
+                        showPostButton: false,
                     })
                     if(this.state.userId === this.state.thisPageUserId) {
                         this.setState({
@@ -50,6 +55,14 @@ class Profile extends Component {
                 }
             })
             .catch(err => console.log(err));
+    }
+    componentDidUpdate() {
+        if(this.state.thisPageUserId !== this.props.history.location.pathname.slice(9)) {
+            this.getData();
+        }
+    }
+    componentDidMount() {console.log('profile');
+        this.getData();
     }
     handleEdit = () => {
 
@@ -76,6 +89,7 @@ class Profile extends Component {
         })
     }
     render() {
+        
         const thisPageUserId = this.state.thisPageUserId;
         const editButton = this.state.isThisUser ? (
                 <div>
@@ -86,21 +100,21 @@ class Profile extends Component {
         );
         const followersList = this.state.followersButton ? (
             <div>
-                <FollowerPage thisPageUserId={this.state.thisPageUserId}/>
+                <FollowerPage thisPageUserId={thisPageUserId}/>
             </div>
         ) : (
             <div></div>
         );
         const followingList = this.state.followingButton ? (
             <div>
-                <FollowingPage thisPageUserId={this.state.thisPageUserId}/>
+                <FollowingPage thisPageUserId={thisPageUserId}/>
             </div>
         ) : (
             <div></div>
         );
         const postList = this.state.showPostButton ? (
             <div>
-                <UserPost thisPageUserId={this.state.thisPageUserId}/>
+                <UserPost thisPageUserId={thisPageUserId}/>
             </div>
         ) : (
             <div></div>
