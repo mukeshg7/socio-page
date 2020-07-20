@@ -10,15 +10,23 @@ class Post extends Component {
         userName: this.props.userName,
         userId: this.props.userId,
         isLiked: false,
+        showPost: false,
     }
     componentDidMount() {
         const postId = this.props.post._id;
         Axios.get(`http://localhost:3000/postLike/${postId}`, {withCredentials: true})
             .then(res => {
-                if(res.data.isLiked) {
+                if(res.status === 201) {
+                    console.log('Not follow');
+                } else {
+                    if(res.data.isLiked) {
+                        this.setState({
+                            isLiked: true,
+                        });
+                    }
                     this.setState({
-                        isLiked: true,
-                    });
+                        showPost: true,
+                    })
                 }
             })
             .catch(err => console.log(err));
@@ -49,8 +57,7 @@ class Post extends Component {
         ) : (
             <i className="far fa-heart"></i>
         );
-        return (
-            
+        const postBody = this.state.showPost ? (
                     <div className="post card" key={post._id}>
                         <div className="card-content">
                             <span className="card-title">By | <li><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></li></span>
@@ -59,7 +66,13 @@ class Post extends Component {
                             <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
                         </div>
                     </div>
-               
+        ) : (
+            <div></div>
+        );
+        return (
+            <div>
+                { postBody }
+            </div>
         )
     }
 }

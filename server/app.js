@@ -60,7 +60,7 @@ app.get('/feed', (req, res) => {
 
 app.get('/post/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
-    Post.find({'userId': id})
+    Post.find({'userId': id}).sort({ createdAt: -1})
         .then(posts => {
             res.status(200).send(posts)
         })
@@ -70,15 +70,53 @@ app.get('/post/:id', checkProfileLogStatus, (req, res) => {
 app.get('/postLike/:id', (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
-    Post.findOne({ $and: [{ '_id': id }, { 'likedUserIds': {$elemMatch: { 'userId':  userId } } }]})
-        .then(post => {
-            if(post) {
-                res.status(200).send({ isLiked: true });
+    Post.findById(id, 'userId likedUserIds')
+        .then(post => {console.log(post);
+            const postUser = post.userId;
+            const likedUserIds = post.likedUserIds;
+            let isLiked = false;
+            likedUserIds.forEach(user => {
+                if(user.userId === userId) {
+                    isLiked = true;
+                }
+            })
+            if(postUser === userId) {
+                res.status(200).send({ isLiked, isFollow: true });
             } else {
-                res.status(200).send({ isLiked: false });
+                User.findOne({$and: [{'_id': postUser},{ 'followers': {$elemMatch: { 'userId':  userId } } }]})
+                    .then(result => {
+                        if(result) {
+                            res.status(200).send({ isLiked, isFollow: true});
+                        } else {
+                            res.status(201).send({ isLiked, isFollow: false});
+                        }
+                    })
+                    .catch(err => console.log(err));
             }
         })
         .catch(err => console.log(err));
+    // Post.findById(id, 'userId')
+    //     .then(user => {
+    //         const postUser = user.userId;
+    //         User.findOne({$and: [{'_id': postUser}, {$or: [{ 'followers': {$elemMatch: { 'userId':  userId } } }, {'_id': userId}]}]})
+    //             .then(result => {console.log(result);
+    //                 if(result) {
+    //                     Post.findOne({ $and: [{ '_id': id }, { 'likedUserIds': {$elemMatch: { 'userId':  userId } } }]})
+    //                         .then(post => {
+    //                             if(post) {
+    //                                 res.status(200).send({ isLiked: true });
+    //                             } else {
+    //                                 res.status(200).send({ isLiked: false });
+    //                             }
+    //                         })
+    //                         .catch(err => console.log(err));
+    //                 } else {
+    //                     res.status(201).send({isFollow: false})
+    //                 }
+    //             })
+    //     })
+    //     .catch(err => console.log(err));
+    
 })
 
 app.post('/like', (req, res) => {
