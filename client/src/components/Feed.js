@@ -7,9 +7,10 @@ import Post from './Post'
 class Feed extends Component {
     state = {
         posts: [],
-        isLoggedIn: false,
+        isLoggedIn: true,
         userName: this.props.userName,
         userId: this.props.userId,
+        message: 'Loading...'
     }
     componentDidMount() {
         Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
@@ -27,6 +28,11 @@ class Feed extends Component {
                             this.setState({
                                 posts: res.data,
                             })
+                            if(this.state.posts.length === 0) {
+                                this.setState({
+                                    message: 'No Posts to show!',
+                                })
+                            }
                         })
                         .catch(err => console.log(err));
                 } else {
@@ -37,19 +43,19 @@ class Feed extends Component {
     }
     render() {
         const posts = this.state.posts;
-        const postCard = posts.length ? (
+        const postCards = posts.length ? (
             posts.map((post) => {
                 return (
                         <Post post={post} userName={this.state.userName} userId={this.state.userId} />
                     )
                 })
             ) : (
-                <h4>Post not available.</h4>
+                <h4>{ this.state.message }</h4>
             );
         const feed = this.state.isLoggedIn  ? (
             <div>
                 <h1 className="center">Feed</h1>
-                <div className="container">{postCard}</div>
+                <div className="container">{postCards}</div>
             </div>
         ) : (
             <div><h4 className="center">Please Login/Signup to view the posts!</h4></div>
