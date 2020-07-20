@@ -71,7 +71,7 @@ app.get('/postLike/:id', (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
     Post.findById(id, 'userId likedUserIds')
-        .then(post => {console.log(post);
+        .then(post => {
             const postUser = post.userId;
             const likedUserIds = post.likedUserIds;
             let isLiked = false;
@@ -81,7 +81,7 @@ app.get('/postLike/:id', (req, res) => {
                 }
             })
             if(postUser === userId) {
-                res.status(200).send({ isLiked, isFollow: true });
+                res.status(200).send({ isLiked, isFollow: true, isUser: true });
             } else {
                 User.findOne({$and: [{'_id': postUser},{ 'followers': {$elemMatch: { 'userId':  userId } } }]})
                     .then(result => {
