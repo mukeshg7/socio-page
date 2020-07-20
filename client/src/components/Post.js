@@ -9,18 +9,32 @@ class Post extends Component {
         likes: this.props.post.likes,
         userName: this.props.userName,
         userId: this.props.userId,
+        isLiked: false,
     }
-    
+    componentDidMount() {
+        const postId = this.props.post._id;
+        Axios.get(`http://localhost:3000/postLike/${postId}`, {withCredentials: true})
+            .then(res => {
+                if(res.data.isLiked) {
+                    this.setState({
+                        isLiked: true,
+                    });
+                }
+            })
+            .catch(err => console.log(err));
+    }
     handleLike = (postId, userId) => {
         const data = {
             postId,
             userId: this.props.userId,
+            isLiked: this.state.isLiked,
         }
         Axios.post('http://localhost:3000/like', data, {withCredentials: true})
             .then(res => {
                 if(res.status === 200) {
                     this.setState({
                         likes: res.data.new,
+                        isLiked: res.data.isLiked,
                     })
                 } else {
                     alert("Post Not Available!")
@@ -30,6 +44,11 @@ class Post extends Component {
     }
     render() {
         const post = this.props.post;
+        const likeButton = this.state.isLiked ? (
+            <i className="fas fa-heart"></i>
+        ) : (
+            <i className="far fa-heart"></i>
+        );
         return (
             <div className="row">
                 <div className="col s8">
@@ -38,8 +57,7 @@ class Post extends Component {
                             <span className="card-title">By | <li><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></li></span>
                             <span className="right">{post.createdAt}</span>
                             <div><p>{post.body}</p></div>
-                            <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small"><i className="fas fa-fire-alt"></i></button>
-                            <span>{this.state.likes}</span>
+                            <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
                         </div>
                     </div>
                 </div>

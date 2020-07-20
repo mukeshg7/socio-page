@@ -67,6 +67,20 @@ app.get('/post/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
+app.get('/postLike/:id', (req, res) => {
+    const id = req.params.id.trim();
+    const userId = req.session.user._id;
+    Post.findOne({ $and: [{ '_id': id }, { 'likedUserIds': {$elemMatch: { 'userId':  userId } } }]})
+        .then(post => {
+            if(post) {
+                res.status(200).send({ isLiked: true });
+            } else {
+                res.status(200).send({ isLiked: false });
+            }
+        })
+        .catch(err => console.log(err));
+})
+
 app.post('/like', (req, res) => {
     const postId = req.body.postId;
     const userId = req.body.userId;
@@ -74,23 +88,19 @@ app.post('/like', (req, res) => {
     Post.findById(postId)
         .then(response => {
             if(response) {
-                Post.findOne( {$and: [{ '_id': ObjectId(postId)} , {'likedUserIds': {$elemMatch: { 'userId':  userId }}}]})
-                    .then(post => {
-                        if(post) {
-                            Post.updateOne({ _id: postId }, { $pull: { likedUserIds:  { userId } } ,  $inc: { likes: -1 }} )    //Revome
-                                .then(result => {
-                                    res.status(200).send({ new: response.likes-1});
-                                })
-                                .catch(err => console.log(err));
-                        } else {
-                            Post.updateOne( { _id: postId }, { $push: { likedUserIds:  { userId } },  $inc: { likes: 1 }})    //Revome
-                                .then(result => {
-                                    res.status(200).send({ new: response.likes+1});
-                                })
-                                .catch(err => console.log(err));
-                        }
-                    })
-                    .catch(err => console.log(err));
+                if(req.body.isLiked) {
+                    Post.updateOne({ _id: postId }, { $pull: { likedUserIds:  { userId } } ,  $inc: { likes: -1 }} )    //Revome
+                        .then(result => {
+                            res.status(200).send({ new: response.likes-1, isLiked: false});
+                        })
+                        .catch(err => console.log(err));
+                } else {
+                    Post.updateOne( { _id: postId }, { $push: { likedUserIds:  { userId } },  $inc: { likes: 1 }})    //Revome
+                        .then(result => {
+                            res.status(200).send({ new: response.likes+1, isLiked: true});
+                        })
+                        .catch(err => console.log(err));
+                }
             } else {
                 res.status(203).send("Post not available.");
             }
