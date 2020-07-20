@@ -1,42 +1,24 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
-import { connect } from 'react-redux'
-import { login, logout } from '../actions/action'
 import Post from './Post'
 
 class Feed extends Component {
     state = {
         posts: [],
-        isLoggedIn: true,
         userName: this.props.userName,
         userId: this.props.userId,
         message: 'Loading...'
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+        Axios.get('http://localhost:3000/feed')
             .then(res => {
-                const isLoggedIn = res.data.isLoggedIn;
                 this.setState({
-                    isLoggedIn,
-                    userName: this.props.userName,
-                    userId: this.props.userId,
+                    posts: res.data,
                 })
-                if(isLoggedIn) {
-                    this.props.loginUser(res.data.userId);
-                    Axios.get('http://localhost:3000/feed')
-                        .then(res => {
-                            this.setState({
-                                posts: res.data,
-                            })
-                            if(this.state.posts.length === 0) {
-                                this.setState({
-                                    message: 'No Posts to show!',
-                                })
-                            }
-                        })
-                        .catch(err => console.log(err));
-                } else {
-                    this.props.logoutUser();
+                if(this.state.posts.length === 0) {
+                    this.setState({
+                        message: 'No Posts to show!',
+                    })
                 }
             })
             .catch(err => console.log(err));
@@ -52,35 +34,13 @@ class Feed extends Component {
             ) : (
                 <h4>{ this.state.message }</h4>
             );
-        const feed = this.state.isLoggedIn  ? (
-            <div>
-                <h1 className="center">Feed</h1>
-                <div className="container">{postCards}</div>
-            </div>
-        ) : (
-            <div><h4 className="center">Please Login/Signup to view the posts!</h4></div>
-        );
+    
         return(
-            <div>
-                {feed}
+            <div className="container">
+                {postCards}
             </div>
         )
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        loginUser:(userId) => dispatch(login(userId)),
-        logoutUser: () => dispatch(logout()),
-    }
-}
-
-const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.isLoggedIn,
-        userId: state.userId,
-        userName: state.userName
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+export default Feed;
