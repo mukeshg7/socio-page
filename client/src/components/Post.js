@@ -50,8 +50,7 @@ class Post extends Component {
             <i className="far fa-heart"></i>
         );
         return (
-            <div className="row">
-                <div className="col s8">
+            
                     <div className="post card" key={post._id}>
                         <div className="card-content">
                             <span className="card-title">By | <li><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></li></span>
@@ -60,8 +59,7 @@ class Post extends Component {
                             <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
                         </div>
                     </div>
-                </div>
-            </div>
+               
         )
     }
 }

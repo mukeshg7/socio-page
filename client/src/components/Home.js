@@ -5,7 +5,17 @@ function Home() {
     return(
         <div>
             <h1 className="center">Welcome to SocioPage!</h1>
-            <Feed />
+            <div className="row">
+                <div className="col s8">
+                    <Feed />
+                </div>
+                <div className="col s4">
+                
+                    <div className="card">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
         
     )
