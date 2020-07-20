@@ -11,6 +11,7 @@ class Post extends Component {
         userId: this.props.userId,
         isLiked: false,
         showPost: false,
+        isUser: false,
     }
     componentDidMount() {
         const postId = this.props.post._id;
@@ -23,6 +24,11 @@ class Post extends Component {
                         this.setState({
                             isLiked: true,
                         });
+                    }
+                    if(res.data.isUser){
+                        this.setState({
+                            isUser: true,
+                        })
                     }
                     this.setState({
                         showPost: true,
@@ -50,12 +56,34 @@ class Post extends Component {
             })
             .catch(err => console.log(err));
     }
+    handleDelete = (postId) => {
+        Axios.get(`http://localhost:3000/delete/${postId}`, {withCredentials: true})
+            .then(res => {
+                if(res.status === 200) {
+                    this.setState({
+                        showPost: false,
+                    })
+                    alert('Post Deleted!');
+                } else {
+                    alert('Please Login to delete post!')
+                    this.props.history.push({
+                        pathname: `/login`
+                    });
+                }
+            })
+            .catch(err => console.log(err));
+    }
     render() {
         const post = this.props.post;
         const likeButton = this.state.isLiked ? (
             <i className="fas fa-heart"></i>
         ) : (
             <i className="far fa-heart"></i>
+        );
+        const deleteButton = this.state.isUser ? (
+            <button onClick={() => this.handleDelete(post._id)} className="right waves-effect waves-light btn-small">Delete</button>
+        ) : (
+            <div></div>
         );
         const postBody = this.state.showPost ? (
                     <div className="post card" key={post._id}>
@@ -64,6 +92,7 @@ class Post extends Component {
                             <span className="right">{post.createdAt}</span>
                             <div><p>{post.body}</p></div>
                             <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
+                            {deleteButton}
                         </div>
                     </div>
         ) : (

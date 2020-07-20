@@ -146,6 +146,19 @@ app.post('/like', (req, res) => {
         .catch(err => console.log(err));
 })
 
+app.get('/delete/:id', (req, res) => {
+    const id = req.params.id.trim();
+    if(req.session.user) {
+        Post.findByIdAndDelete(id)
+        .then(result => {
+            res.status(200).send("Deleted Successfully!");
+        })
+        .catch(err => console.log(err));
+    } else {
+        res.status(203).send("Not LoggedIn!")
+    }
+})
+
 app.get('/followpage', (req, res) => {
     if(req.session.user) {
         const userId = req.session.user._id;
