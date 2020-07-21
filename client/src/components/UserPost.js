@@ -44,7 +44,7 @@ class UserPost extends Component {
         );
         const feed = this.state.isLoggedIn  ? (
             <div>
-                <h4 className="center">Your Posts!</h4>
+                <h3 className="center">Your Posts</h3>
                 <div className="container">{body}</div>
             </div>
         ) : (
