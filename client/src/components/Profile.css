@@ -10,20 +10,18 @@ h4{
 .row {
     margin: 0px;
 }
-.info, img {
+.info h4, .info div {
+    padding: 10px 5px;
+}
+.image img{
+    width: 180px;
+    height: 180px;
+    object-fit: fill;
+
     display: block;
     text-align: center;
     margin: 0px auto;
     padding: 10px;
-}
-.info h4, .info div {
-    padding: 10px 5px;
-}
-img{
-    
-    width: 180px;
-    height: 180px;
-    object-fit: fill;
 }
 .btn-container {
     margin: 0px auto;
