@@ -91,10 +91,10 @@ class Post extends Component {
                     <div className="post card postcard" key={post._id}>
                         <div className="card-content">
                             <div className="row">
-                                <div className="col s4">
+                                <div className="col s2">
                                     <img src={img} />
                                 </div>
-                                <div className="col s8">
+                                <div className="col s10">
                                     <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
                                     <div className="row"><div className="col s12"><p class="right">{post.createdAt}</p></div></div>
                                 </div>
