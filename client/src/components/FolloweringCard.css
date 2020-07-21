@@ -1,4 +1,10 @@
-.followeringCard img {
+.followeringCard .image img {
     width: 60px;
     height: 60px;
+}
+.followeringCard span {
+    padding-left: 10px;
+}
+.followeringCard .btn-container {
+    padding-top: 10px;
 }

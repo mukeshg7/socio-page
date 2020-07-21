@@ -74,14 +74,18 @@ class FolloweringCard extends Component {
             <div className="post card followeringCard">
                 <div className="card-content">
                     <div className="row">
-                        <div className="col l12 m4 s12">
-                            <img src={img}></img>
+                        <div className="col l4 m4 s12">
+                            <div className="image">
+                                <img src={img}></img>
+                            </div>
                         </div>
-                        <div className="col l12 m8 s12">
+                        <div className="col l8 m8 s12">
                             <Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link>
                         </div>
                     </div>
-                    <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
+                    <div className="btn-container">
+                        <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
+                    </div>
                 </div>
             </div>
         )

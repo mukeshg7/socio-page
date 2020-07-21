@@ -1,0 +1,9 @@
+.followcard img {
+    height: 60px;
+    width: 60px;
+    padding-right: 10px;
+}
+
+.followcard .btn-container {
+    padding-top: 10px;
+}

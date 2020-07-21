@@ -53,9 +53,7 @@ class FollowingPage extends Component {
         return (
             <div>
                 <h4 className="center">Following {this.state.userName}</h4>
-                <div className="container">
                     <div className="row">{body}</div>
-                </div>
             </div>
         )
     }

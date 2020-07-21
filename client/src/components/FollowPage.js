@@ -36,7 +36,7 @@ class Follow extends Component {
         const list = users.length ? (
             users.map((user) => {
                 return (
-                    <div className="col s4">
+                    <div className="col l4 m6 s6">
                         <FollowCard user={user} />
                     </div>
                 )
@@ -51,7 +51,7 @@ class Follow extends Component {
         );
         return (
             <div>
-                <h4 className="center">Follow Suggestion!</h4>
+                <h4 className="center" style={{padding: 20+'px',}}>Follow Suggestion!</h4>
                 <div className="container">
                     <div className="row">{body}</div>
                 </div>
