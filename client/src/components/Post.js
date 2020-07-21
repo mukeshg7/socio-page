@@ -88,7 +88,7 @@ class Post extends Component {
         const postBody = this.state.showPost ? (
                     <div className="post card" key={post._id}>
                         <div className="card-content">
-                            <span className="card-title">By | <li><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></li></span>
+                            <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
                             <span className="right">{post.createdAt}</span>
                             <div><p>{post.body}</p></div>
                             <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>

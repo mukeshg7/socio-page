@@ -71,7 +71,7 @@ class FolloweringCard extends Component {
         return (
             <div className="post card">
                 <div className="card-content">
-                    <li><Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link></li>
+                    <Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link>
                     <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
                 </div>
             </div>
