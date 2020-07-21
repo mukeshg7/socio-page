@@ -6,6 +6,8 @@ import { login, logout } from '../actions/action'
 import UserPost from './UserPost'
 import FollowerPage from './FollowerPage'
 import FollowingPage from './FollowingPage'
+import './Profile.css'
+import img from '../assets/Pikachu.png'
 
 class Profile extends Component {
     state = {
@@ -40,7 +42,7 @@ class Profile extends Component {
                         followingCount: res.data.followingCount,
                         followersButton: false,
                         followingButton: false,
-                        showPostButton: false,
+                        showPostButton: true,
                     })
                     if(this.state.userId === this.state.thisPageUserId) {
                         this.setState({
@@ -72,25 +74,28 @@ class Profile extends Component {
 
     }
     handleFollowers = () => {
-        this.setState({
-            followersButton: true,
-            followingButton: false,
-            showPostButton: false,
-        })
+        if(this.state.followersButton === true) {
+            this.setState({
+                followersButton: false,
+            })
+        } else {
+            this.setState({
+                followersButton: true,
+                followingButton: false,
+            })
+        }
     }
     handleFollowing = () => {
-        this.setState({
-            followersButton: false,
-            followingButton: true,
-            showPostButton: false,
-        })
-    }
-    handleShowPost = () => {
-        this.setState({
-            followersButton: false,
-            followingButton: false,
-            showPostButton: true,
-        })
+        if(this.state.followingButton === true) {
+            this.setState({
+                followingButton: false,
+            })
+        } else {
+            this.setState({
+                followersButton: false,
+                followingButton: true,
+            })
+        }
     }
     render() {
         
@@ -125,38 +130,43 @@ class Profile extends Component {
         );
         return (
             <div className="container">
-                <h1>Profile Page</h1>
-                <div className="card">
+                <div className="profile">
                     <div className="row">
-                        <div className="col s8">
-                            <h4>{ this.state.thisPageUserName }</h4>
-                            <h4>{ this.state.thisPageEmail }</h4>
-                            
-                            { editButton }
+                        <div className="col l6 m12 s12">
+                            <h3 className="center">Profile</h3>
+                            <div className="card">
+                                <div className="row">
+                                    <div className="col l6 m12 s12">
+                                        <div className="image">
+                                            <img src={img}></img>
+                                        </div>
+                                    </div>
+                                    <div className="col l6 m12 s12">
+                                        <div className="info">
+                                            <h4>{ this.state.thisPageUserName }</h4>
+                                            <h4>{ this.state.thisPageEmail }</h4>
+                                            { editButton }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="card">
+                                <div className="btn-container">
+                                    <button onClick={this.handleFollowers} className="waves-effect waves-light btn">{this.state.followersCount} Followers</button>
+                                
+                                    <button onClick={this.handleFollowing} className="waves-effect waves-light btn">{this.state.followingCount} Following</button>
+                                </div>
+                            </div>
+
+                            {followersList}
+                            {followingList}
                         </div>
-                        <div className="col s4">
-                            <img href="" style={{width: 200 + 'px', height: 200 + 'px'}}></img>
+                        <div className="col l6 m12 s12">
+                            {postList}
                         </div>
                     </div>
                 </div>
-
-                <div className="card">
-                    <div className="row">
-                        <div className="col s4">
-                            <button onClick={this.handleFollowers} className="waves-effect waves-light btn">{this.state.followersCount} Followers</button>
-                        </div>
-                        <div className="col s4">
-                            <button onClick={this.handleFollowing} className="waves-effect waves-light btn">{this.state.followingCount} Following</button>
-                        </div>
-                        <div className="col s4">
-                        <button onClick={this.handleShowPost} className="waves-effect waves-light btn">Post</button>
-                        </div>
-                    </div>
-                </div>
-
-                {followersList}
-                {followingList}
-                {postList}
             </div>
         )
     }

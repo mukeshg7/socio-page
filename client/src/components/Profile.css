@@ -1,0 +1,36 @@
+.profile {
+    padding: 0px 0px;
+}
+h3{
+    padding-left: 10px;
+}
+h4{
+    margin: 0px;
+}
+.row {
+    margin: 0px;
+}
+.info, img {
+    display: block;
+    text-align: center;
+    margin: 0px auto;
+    padding: 10px;
+}
+.info h4, .info div {
+    padding: 10px 5px;
+}
+img{
+    
+    width: 180px;
+    height: 180px;
+    object-fit: fill;
+}
+.btn-container {
+    margin: 0px auto;
+    display: flex;
+	justify-content: center;
+	align-content: center;
+}
+.btn-container button {
+    margin: 0px auto;
+}
