@@ -73,9 +73,7 @@ class AddPost extends Component {
                 </div>
             </div>
         ) : (
-            <div>
-                <h4>Please Login/Signup to add a Post!</h4>
-            </div>
+            <div></div>
         );
         return (
             <div className="container">
