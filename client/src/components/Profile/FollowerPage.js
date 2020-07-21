@@ -15,7 +15,7 @@ class FollowerPage extends Component {
     }
     componentDidMount() {
         let path = this.state.thisPageUserId;
-        Axios.get(`http://localhost:3000/follower/${path}`, { withCredentials: true })
+        Axios.get(`http://localhost:5000/follower/${path}`, { withCredentials: true })
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();

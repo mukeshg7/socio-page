@@ -10,7 +10,7 @@ class Feed extends Component {
         message: 'Loading...'
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/feed', {withCredentials: true})
+        Axios.get('http://localhost:5000/feed', {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     alert("You are not LoggedIn!")

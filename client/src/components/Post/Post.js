@@ -17,11 +17,10 @@ class Post extends Component {
     }
     componentDidMount() {
         const postId = this.props.post._id;
-        Axios.get(`http://localhost:3000/postLike/${postId}`, {withCredentials: true})
+        Axios.get(`http://localhost:5000/postLike/${postId}`, {withCredentials: true})
             .then(res => {
-                if(res.status === 201) {
-                    console.log('Not follow');
-                } else {
+                if(res.status === 201);
+                else {
                     if(res.data.isLiked) {
                         this.setState({
                             isLiked: true,
@@ -45,7 +44,7 @@ class Post extends Component {
             userId: this.props.userId,
             isLiked: this.state.isLiked,
         }
-        Axios.post('http://localhost:3000/post/like', data, {withCredentials: true})
+        Axios.post('http://localhost:5000/post/like', data, {withCredentials: true})
             .then(res => {
                 if(res.status === 200) {
                     this.setState({
@@ -65,7 +64,7 @@ class Post extends Component {
             .catch(err => console.log(err));
     }
     handleDelete = (postId) => {
-        Axios.get(`http://localhost:3000/post/delete/${postId}`, {withCredentials: true})
+        Axios.get(`http://localhost:5000/post/delete/${postId}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();

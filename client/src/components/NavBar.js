@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { logout } from '../actions/action'
 
 const handleLogout = (props) => {
-        Axios.get('http://localhost:3000/logout', {withCredentials: true})
+        Axios.get('http://localhost:5000/logout', {withCredentials: true})
             .then(res => {
                 if(res.status === 200) {
                     alert("Successfully Logged Out!");

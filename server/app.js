@@ -19,8 +19,8 @@ const dbUrl = "mongodb+srv://admin:pass123@socioapp-lcfq8.mongodb.net/socio-app?
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
     .then((response) => {
         console.log("connected to db");
-        app.listen(3000, () => {
-            console.log('Listning at port 3000');
+        app.listen(5000, () => {
+            console.log('Listning at port 5000');
         });
     })
     .catch(err => console.log(err));

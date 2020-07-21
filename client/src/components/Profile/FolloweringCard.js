@@ -11,7 +11,7 @@ class FolloweringCard extends Component {
     }
     componentDidMount() {
         let path = this.props.user.userId;
-        Axios.get(`http://localhost:3000/checkfollowstatus/${path}`, {withCredentials: true})
+        Axios.get(`http://localhost:5000/checkfollowstatus/${path}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     alert("You are not LoggedIn!")
@@ -46,7 +46,7 @@ class FolloweringCard extends Component {
                 followUserId: this.props.user.userId,
                 followUserName: this.props.user.userName,
             }
-            Axios.post('http://localhost:3000/follow', data, {withCredentials: true})
+            Axios.post('http://localhost:5000/follow', data, {withCredentials: true})
                 .then(res => {
                     if(res.status === 200) {
                         this.setState({
@@ -66,7 +66,7 @@ class FolloweringCard extends Component {
                 unFollowUserId: this.props.user.userId,
                 unFollowUserName: this.props.user.userName,
             };
-            Axios.post('http://localhost:3000/unfollow', data, {withCredentials: true})
+            Axios.post('http://localhost:5000/unfollow', data, {withCredentials: true})
                 .then(res => {
                     if(res.status === 200) {
                         this.setState({

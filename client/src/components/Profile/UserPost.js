@@ -13,7 +13,7 @@ class UserPost extends Component {
         message: 'Loading...',
     }
     componentDidMount() {
-        Axios.get(`http://localhost:3000/post/${this.state.thisPageUserId}`, {withCredentials: true})
+        Axios.get(`http://localhost:5000/post/${this.state.thisPageUserId}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();

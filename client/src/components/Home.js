@@ -15,7 +15,7 @@ class Home extends Component {
         isLoggedIn: true,
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+        Axios.get('http://localhost:5000/checkuser', {withCredentials: true})
             .then(res => {
                 const isLoggedIn = res.data.isLoggedIn;
                 this.setState({

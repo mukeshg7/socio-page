@@ -19,7 +19,7 @@ class FollowCard extends Component {
                 followUserId: this.props.user._id,
                 followUserName: this.props.user.userName,
             }
-            Axios.post('http://localhost:3000/follow', data, {withCredentials: true})
+            Axios.post('http://localhost:5000/follow', data, {withCredentials: true})
                 .then(res => {
                     if(res.status === 200) {
                         this.setState({
@@ -39,7 +39,7 @@ class FollowCard extends Component {
                 unFollowUserId: this.props.user._id,
                 unFollowUserName: this.props.user.userName,
             };
-            Axios.post('http://localhost:3000/unfollow', data, {withCredentials: true})
+            Axios.post('http://localhost:5000/unfollow', data, {withCredentials: true})
                 .then(res => {
                     if(res.status === 200) {
                         this.setState({

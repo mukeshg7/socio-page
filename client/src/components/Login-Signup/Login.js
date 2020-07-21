@@ -16,7 +16,7 @@ class Login extends Component {
                 pathname: `/profile/${userId}`
             });
         } else {
-            Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+            Axios.get('http://localhost:5000/checkuser', {withCredentials: true})
             .then(res => {
                 if(res.data.isLoggedIn) {
                     this.props.loginUser(res.data.userId, res.data.userName);
@@ -39,7 +39,7 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password,
         }
-        Axios.post(' http://localhost:3000/login', userData, {withCredentials: true})
+        Axios.post(' http://localhost:5000/login', userData, {withCredentials: true})
             .then(response => {
                 if(response.status === 203) {
                     alert("Some error occured. Please refresh the page.");

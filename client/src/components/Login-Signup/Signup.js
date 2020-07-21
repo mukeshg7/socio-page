@@ -9,7 +9,7 @@ class Signup extends Component {
         confirmPassword: "",
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+        Axios.get('http://localhost:5000/checkuser', {withCredentials: true})
             .then(res => {
                 if(res.data.isLoggedIn) {
                     this.props.loginUser(res.data.userId, res.data.userName);
@@ -37,7 +37,7 @@ class Signup extends Component {
             followersCount: 0,
             followingCount: 0,
         }
-        Axios.post('http://localhost:3000/signup', userData, {withCredentials: true})
+        Axios.post('http://localhost:5000/signup', userData, {withCredentials: true})
             .then(res => {
                 if(res.status === 201) {
                     alert("User Already LoggedIn. Redirecting to Profile.")

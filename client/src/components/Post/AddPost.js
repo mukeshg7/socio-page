@@ -13,7 +13,7 @@ class AddPost extends Component {
         userId: "",
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+        Axios.get('http://localhost:5000/checkuser', {withCredentials: true})
             .then(res => {
                 const isLoggedIn = res.data.isLoggedIn;
                 this.setState({
@@ -47,7 +47,7 @@ class AddPost extends Component {
             userId: this.state.userId,
             likedUserIds: [],
         }
-        Axios.post('http://localhost:3000/addpost', post, {withCredentials: true})
+        Axios.post('http://localhost:5000/addpost', post, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
 
