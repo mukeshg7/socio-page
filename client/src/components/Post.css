@@ -4,3 +4,6 @@ img {
     object-fit: fill;
 }
 
+.post-body p {
+    padding: 5px 10px;
+}

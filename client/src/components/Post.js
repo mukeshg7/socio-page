@@ -96,10 +96,12 @@ class Post extends Component {
                                 </div>
                                 <div className="col s8">
                                     <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
+                                    <div className="row"><div className="col s12"><p class="right">{post.createdAt}</p></div></div>
                                 </div>
                             </div>
-                            <span className="right">{post.createdAt}</span>
-                            <div><p>{post.body}</p></div>
+                            <hr></hr>
+                            <div className="row post-body"><p>{post.body}</p></div>
+                            <hr></hr>
                             <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
                             {deleteButton}
                         </div>
