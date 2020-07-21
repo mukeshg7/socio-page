@@ -117,7 +117,7 @@ app.get('/postLike/:id', checkProfileLogStatus, (req, res) => {
     
 })
 
-app.post('/like', checkProfileLogStatus, (req, res) => {
+app.post('/post/like', checkProfileLogStatus, (req, res) => {
     const postId = req.body.postId;
     const userId = req.body.userId;
 
@@ -144,7 +144,7 @@ app.post('/like', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/delete/:id', checkProfileLogStatus, (req, res) => {
+app.get('/post/delete/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     if(req.session.user) {
         Post.findByIdAndDelete(id)

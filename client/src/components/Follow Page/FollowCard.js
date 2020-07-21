@@ -1,49 +1,22 @@
 import React, { Component } from 'react'
 import Axios from 'axios';
 import {Link} from 'react-router-dom'
-import img from '../assets/Pikachu.png'
-import './FolloweringCard.css'
+import './FollowCard.css'
+import img from '../../assets/Pikachu.png'
 
-class FolloweringCard extends Component {
+class FollowCard extends Component {
     state = {
-        buttonText: 'Wait...',
-        isDisable: true,
+        buttonText: 'Follow',
+        isDisable: false
     }
-    componentDidMount() {
-        let path = this.props.user.userId;
-        Axios.get(`http://localhost:3000/checkfollowstatus/${path}`, {withCredentials: true})
-            .then(res => {
-                if(res.status === 207) {
-                    alert("You are not LoggedIn!")
-                    this.props.history.push({
-                        pathname: `/login`,
-                    })
-                } else if(path === this.props.userId) {
-                    this.setState({
-                        buttonText: 'Follow',
-                        isDisable: true,
-                    })
-                } else if(res.data.isFollowing) {
-                    this.setState({
-                        buttonText: 'Following',
-                        isDisable: false,
-                    })
-                } else {
-                    this.setState({
-                        buttonText: 'Follow',
-                        isDisable: false,
-                    })
-                }
-            })
-            .catch(err => console.log(err));
-    }
+
     handleFollowUnFollow = () => {
         this.setState({
             isDisable: true,
         })
         if(this.state.buttonText === 'Follow') {
             const data = {
-                followUserId: this.props.user.userId,
+                followUserId: this.props.user._id,
                 followUserName: this.props.user.userName,
             }
             Axios.post('http://localhost:3000/follow', data, {withCredentials: true})
@@ -54,7 +27,7 @@ class FolloweringCard extends Component {
                             isDisable: false,
                         })
                     } else {
-                        alert('You are not LoggedIn!');
+                        alert("You are not LoggedIn!")
                         this.props.history.push({
                             pathname: `/login`,
                         })
@@ -63,7 +36,7 @@ class FolloweringCard extends Component {
                 .catch(err => console.log(err));
         } else {
             const data = {
-                unFollowUserId: this.props.user.userId,
+                unFollowUserId: this.props.user._id,
                 unFollowUserName: this.props.user.userName,
             };
             Axios.post('http://localhost:3000/unfollow', data, {withCredentials: true})
@@ -83,22 +56,21 @@ class FolloweringCard extends Component {
                 .catch(err => console.log(err));
         }
     }
+
     render() {
         const user = this.props.user;
         return (
-            <div className="post card followeringCard">
+            <div className="post card followcard">
                 <div className="card-content">
                     <div className="row">
                         <div className="col l4 m4 s12">
-                            <div className="image">
-                                <img src={img}></img>
-                            </div>
+                            <img src={img}></img>
                         </div>
                         <div className="col l8 m8 s12">
                             <Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link>
                         </div>
                     </div>
-                    <div className="btn-container">
+                    <div class='btn-container'>
                         <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
                     </div>
                 </div>
@@ -107,4 +79,4 @@ class FolloweringCard extends Component {
     }
 }
 
-export default FolloweringCard;
+export default FollowCard;

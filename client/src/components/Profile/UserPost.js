@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
 import { connect } from 'react-redux'
-import Post from './Post'
+import Post from '../Post/Post'
 
 class UserPost extends Component {
     state = {

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import Axios from 'axios'
 import { connect } from 'react-redux'
-import { login, logout } from '../actions/action'
-import img from '../assets/Pikachu.png'
+import { login, logout } from '../../actions/action'
+import img from '../../assets/Pikachu.png'
 import './Post.css'
 
 class Post extends Component {
@@ -45,7 +45,7 @@ class Post extends Component {
             userId: this.props.userId,
             isLiked: this.state.isLiked,
         }
-        Axios.post('http://localhost:3000/like', data, {withCredentials: true})
+        Axios.post('http://localhost:3000/post/like', data, {withCredentials: true})
             .then(res => {
                 if(res.status === 200) {
                     this.setState({
@@ -65,7 +65,7 @@ class Post extends Component {
             .catch(err => console.log(err));
     }
     handleDelete = (postId) => {
-        Axios.get(`http://localhost:3000/delete/${postId}`, {withCredentials: true})
+        Axios.get(`http://localhost:3000/post/delete/${postId}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();

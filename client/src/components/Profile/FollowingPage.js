@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
 import { connect } from 'react-redux'
-import { login, logout } from '../actions/action'
+import { login, logout } from '../../actions/action'
 import FolloweringCard from './FolloweringCard'
 
-class FollowerPage extends Component {
+class FollowingPage extends Component {
     state = {
-        followerUsers: [], 
+        followingUsers: [], 
         thisPageUserId: this.props.thisPageUserId,
         userId: this.props.userId,
         userName: this.props.userName,
@@ -15,30 +15,33 @@ class FollowerPage extends Component {
     }
     componentDidMount() {
         let path = this.state.thisPageUserId;
-        Axios.get(`http://localhost:3000/follower/${path}`, { withCredentials: true })
+        Axios.get(`http://localhost:3000/following/${path}`, { withCredentials: true })
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();
+                    alert("You are not LoggedIn!")
                     this.props.history.push({
                         pathname: `/login`,
                     })
                 } else if(res.status === 200) {
                     this.setState({
-                        followerUsers: res.data.followerUsers,
+                        followingUsers: res.data.followingUsers,
                         isLoggedIn: true,
                     });
-                    if(this.state.followerUsers.length === 0) {
+                    if(this.state.followingUsers.length === 0) {
                         this.setState({
-                            message: 'No Followers',
+                            message: 'No Following',
                         });
                     }
+                } else {
+                    alert("Some error occured! Please refresh the page.")
                 }
             })
     }
     render() {
-        const followerUsers = this.state.followerUsers;
-        const list = followerUsers.length ? (
-            followerUsers.map((user) => {
+        const followingUsers = this.state.followingUsers;
+        const list = followingUsers.length ? (
+            followingUsers.map((user) => {
                 return (
                     <div className="col xl6 l12 m6 s12">
                         <FolloweringCard user={user} userId={this.state.userId}/>
@@ -55,7 +58,7 @@ class FollowerPage extends Component {
         );
         return (
             <div>
-                <h4 className="center">Followers {this.state.userName}</h4>
+                <h4 className="center">Following {this.state.userName}</h4>
                     <div className="row">{body}</div>
             </div>
         )
@@ -77,4 +80,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FollowerPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FollowingPage);

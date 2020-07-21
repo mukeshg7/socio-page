@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Feed from './Feed'
 import {Link} from 'react-router-dom'
 import Axios from 'axios'
 import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
+import Feed from './Post/Feed'
 import './Home.css'
 import img from '../assets/Pikachu.png'
 

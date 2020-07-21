@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import Axios from 'axios'
 import {Link, withRouter} from 'react-router-dom'
 import { connect } from 'react-redux'
-import { login, logout } from '../actions/action'
+import { login, logout } from '../../actions/action'
 import UserPost from './UserPost'
 import FollowerPage from './FollowerPage'
 import FollowingPage from './FollowingPage'
 import './Profile.css'
-import img from '../assets/Pikachu.png'
+import img from '../../assets/Pikachu.png'
 
 class Profile extends Component {
     state = {

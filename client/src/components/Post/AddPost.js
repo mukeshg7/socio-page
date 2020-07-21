@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Axios from 'axios'
 import { connect } from 'react-redux'
-import { login, logout } from '../actions/action'
+import { login, logout } from '../../actions/action'
 
 
 class AddPost extends Component {
