@@ -8,7 +8,7 @@ import img from '../assets/Pikachu.png'
 class Home extends Component {
     state = {
         userId: this.props.userId,
-        userId: this.props.userName,
+        userName: this.props.userName,
         isLoggedIn: true,
     }
     componentDidMount() {
@@ -17,6 +17,8 @@ class Home extends Component {
                 const isLoggedIn = res.data.isLoggedIn;
                 this.setState({
                     isLoggedIn,
+                    userId: res.data.userId,
+                    userName: res.data.userName,
                 })
                 if(isLoggedIn) {
                     this.props.loginUser(res.data.userId, res.data.userName);
@@ -30,14 +32,13 @@ class Home extends Component {
         const body = this.state.isLoggedIn ? (
             <div>
                 <h1 className="center">Welcome to SocioPage!</h1>
-                <div className="row">
+                <div className="row container">
                     
                     <div className="col l4 s12">
                         <div className="card">
                             <div className="row">
                                 <div className="col l6">
-                                    <h4>userNAme</h4>
-                                    <h4>userEmail</h4>
+                                    <h4>{this.state.userName}</h4>
                                 </div>
                                 <div className="col l6">
                                     <img src={img} style={{width: 100+'%', height: 100+'%', }}></img>
