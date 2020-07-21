@@ -15,6 +15,17 @@ class Login extends Component {
             this.props.history.push({
                 pathname: `/profile/${userId}`
             });
+        } else {
+            Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+            .then(res => {
+                if(res.data.isLoggedIn) {
+                    this.props.loginUser(res.data.userId, res.data.userName);
+                    this.props.history.push({
+                        pathname: `/profile/${res.data.userId}`,
+                    })
+                }
+            })
+            .catch(err => console.log(err));
         }
     }
     handleChange = (e) => {

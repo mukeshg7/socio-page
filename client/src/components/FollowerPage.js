@@ -17,7 +17,12 @@ class FollowerPage extends Component {
         let path = this.state.thisPageUserId;
         Axios.get(`http://localhost:3000/follower/${path}`, { withCredentials: true })
             .then(res => {
-                if(res.status === 200) {
+                if(res.status === 207) {
+                    this.props.logoutUser();
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if(res.status === 200) {
                     this.setState({
                         followerUsers: res.data.followerUsers,
                         isLoggedIn: true,
@@ -27,8 +32,6 @@ class FollowerPage extends Component {
                             message: 'No Followers',
                         });
                     }
-                } else {
-                    this.props.logoutUser();
                 }
             })
     }

@@ -8,8 +8,6 @@ const session = require('express-session');
 const User = require('./models/user');
 const Post = require('./models/post');
 const e = require('express');
-const { response } = require('express');
-const ObjectId = require('mongodb').ObjectID;
 
 const app = express();
 
@@ -52,7 +50,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/feed', (req, res) => {
+app.get('/feed', checkProfileLogStatus, (req, res) => {
     Post.find().sort({ createdAt: -1})
         .then(result => res.send(result))
         .catch(err => console.log(err));
@@ -67,7 +65,7 @@ app.get('/post/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/postLike/:id', (req, res) => {
+app.get('/postLike/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
     Post.findById(id, 'userId likedUserIds')
@@ -119,7 +117,7 @@ app.get('/postLike/:id', (req, res) => {
     
 })
 
-app.post('/like', (req, res) => {
+app.post('/like', checkProfileLogStatus, (req, res) => {
     const postId = req.body.postId;
     const userId = req.body.userId;
 
@@ -146,7 +144,7 @@ app.post('/like', (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/delete/:id', (req, res) => {
+app.get('/delete/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     if(req.session.user) {
         Post.findByIdAndDelete(id)
@@ -159,7 +157,7 @@ app.get('/delete/:id', (req, res) => {
     }
 })
 
-app.get('/followpage', (req, res) => {
+app.get('/followpage', checkProfileLogStatus, (req, res) => {
     if(req.session.user) {
         const userId = req.session.user._id;
         const userName = req.session.user.userName;
@@ -174,7 +172,7 @@ app.get('/followpage', (req, res) => {
     }
 })
 
-app.post('/follow', (req, res) => {
+app.post('/follow', checkProfileLogStatus, (req, res) => {
     const userId = req.session.user._id;
     const userName = req.session.user.userName;
     const followUserId = req.body.followUserId;
@@ -190,7 +188,7 @@ app.post('/follow', (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.post('/unfollow', (req, res) => {
+app.post('/unfollow', checkProfileLogStatus, (req, res) => {
     const userId = req.session.user._id;
     const userName = req.session.user.userName;
     const unFollowUserId = req.body.unFollowUserId;
@@ -227,7 +225,7 @@ app.post('/login', checkLoginLogStatus, (req, res, next) => {
 
 app.get('/checkuser', (req, res) => {
     if(req.session.user) {
-        res.send({ isLoggedIn: true, userId: req.session.user._id, userName: req.session.user.userName, userEmail: req.session.user.email, });
+        res.status(203).send({ isLoggedIn: true, userId: req.session.user._id, userName: req.session.user.userName, userEmail: req.session.user.email, });
     } else {
         res.send({ isLoggedIn: false });
     }
@@ -257,7 +255,7 @@ app.get('/follower/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/checkfollowstatus/:id', (req, res) => {
+app.get('/checkfollowstatus/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
     User.findOne({ $and: [{'_id': userId, following: { $elemMatch:{ userId: id } }}]})
@@ -284,7 +282,7 @@ app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
 })
 
 
-app.post('/addpost', (req, res) => {
+app.post('/addpost', checkProfileLogStatus, (req, res) => {
     const post = req.body;
     const newPost = new Post(post);
     newPost.save()
@@ -301,7 +299,7 @@ function checkProfileLogStatus(req, res, next) {
     if(req.session.user) {
         next();
     } else {
-        res.status(202).send("Not logged in!")
+        res.status(207).send("Not logged in!")
     }
 }
 function checkLoginLogStatus(req, res, next) {
@@ -316,41 +314,45 @@ app.post('/signup', async (req, res) => {
     const userInfo = req.body;
     let error = [];
 
-    if(!userInfo.email || !userInfo.userName || !userInfo.password || !userInfo.confirmPassword) {
-        error.push("Fill in all the fields!")
-    }
-    if(userInfo.password !== userInfo.confirmPassword) {
-        error.push("Passwords do not match!");
-    }
-    if(userInfo.password.length < 6) {
-        error.push("Password length should be atleast 6.")
-    }
-    if(error.length > 0) {
-        res.send(error);
+    if(req.session.user) {
+        res.status(201).send({userId: req.session.user._id});
     } else {
-        // Uniqueness of email 
-        User.findOne({email: userInfo.email})
-            .then(response => {
-                if(response) {
-                    error.push("Email already exists!");
-                    res.send(error);
-                } else {
-                    console.log("Signedup!")
-                    const newUser = new User(userInfo);
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.password, salt, (err, hash) => {
-                          if (err) throw err;
-                          newUser.password = hash;
-                            newUser.save()
-                                .then(result => {
-                                    res.send("Successfull Signup!");
+        if(!userInfo.email || !userInfo.userName || !userInfo.password || !userInfo.confirmPassword) {
+            error.push("Fill in all the fields!")
+        }
+        if(userInfo.password !== userInfo.confirmPassword) {
+            error.push("Passwords do not match!");
+        }
+        if(userInfo.password.length < 6) {
+            error.push("Password length should be atleast 6.")
+        }
+        if(error.length > 0) {
+            res.send(error);
+        } else {
+            // Uniqueness of email 
+            User.findOne({email: userInfo.email})
+                .then(response => {
+                    if(response) {
+                        error.push("Email already exists!");
+                        res.send(error);
+                    } else {
+                        console.log("Signedup!")
+                        const newUser = new User(userInfo);
+                        bcrypt.genSalt(10, (err, salt) => {
+                            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if (err) throw err;
+                            newUser.password = hash;
+                                newUser.save()
+                                    .then(result => {
+                                        res.send("Successfull Signup!");
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    })
                                 })
-                                .catch(err => {
-                                    console.log(err);
-                                })
-                            })
-                    })
-            }
-        })
+                        })
+                }
+            })
+        }
     }
 })

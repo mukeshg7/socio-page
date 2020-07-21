@@ -13,7 +13,12 @@ class FolloweringCard extends Component {
         let path = this.props.user.userId;
         Axios.get(`http://localhost:3000/checkfollowstatus/${path}`, {withCredentials: true})
             .then(res => {
-                if(path === this.props.userId) {
+                if(res.status === 207) {
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if(path === this.props.userId) {
                     this.setState({
                         buttonText: 'Follow',
                         isDisable: true,
@@ -48,6 +53,11 @@ class FolloweringCard extends Component {
                             buttonText: 'Following',
                             isDisable: false,
                         })
+                    } else {
+                        alert('You are not LoggedIn!');
+                        this.props.history.push({
+                            pathname: `/login`,
+                        })
                     }
                 })
                 .catch(err => console.log(err));
@@ -55,13 +65,18 @@ class FolloweringCard extends Component {
             const data = {
                 unFollowUserId: this.props.user.userId,
                 unFollowUserName: this.props.user.userName,
-            };console.log(data);
+            };
             Axios.post('http://localhost:3000/unfollow', data, {withCredentials: true})
                 .then(res => {
                     if(res.status === 200) {
                         this.setState({
                             buttonText: 'Follow',
                             isDisable: false,
+                        })
+                    } else {
+                        alert("You are not LoggedIn!")
+                        this.props.history.push({
+                            pathname: `/login`,
                         })
                     }
                 })

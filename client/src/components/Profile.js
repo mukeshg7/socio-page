@@ -31,7 +31,13 @@ class Profile extends Component {
         let path = this.props.history.location.pathname.slice(9);
         Axios.get(`http://localhost:3000/user/${path}`, {withCredentials: true})
             .then(res => {
-                if(res.status === 200) {
+                if(res.status === 207) {
+                    this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if(res.status === 200) {
                     this.setState({
                         userId: res.data.userId,
                         userName: res.data.userName,

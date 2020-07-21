@@ -15,7 +15,13 @@ class UserPost extends Component {
     componentDidMount() {
         Axios.get(`http://localhost:3000/post/${this.state.thisPageUserId}`, {withCredentials: true})
             .then(res => {
-                if(res.status === 200) {
+                if(res.status === 207) {
+                    this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if (res.status === 200) {
                     this.setState({
                         posts: res.data,
                     })

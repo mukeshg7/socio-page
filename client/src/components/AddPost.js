@@ -16,7 +16,6 @@ class AddPost extends Component {
         Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
             .then(res => {
                 const isLoggedIn = res.data.isLoggedIn;
-                
                 this.setState({
                     isLoggedIn,
                     userName: res.data.userName,
@@ -26,6 +25,10 @@ class AddPost extends Component {
                     this.props.loginUser(res.data.userId, res.data.userName);
                 } else {
                     this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
                 }
             })
             .catch(err => console.log(err));
@@ -46,9 +49,13 @@ class AddPost extends Component {
         }
         Axios.post('http://localhost:3000/addpost', post, {withCredentials: true})
             .then(res => {
-                this.props.history.push({
-                    pathname: '/'
-                })
+                if(res.status === 207) {
+
+                } else {
+                    this.props.history.push({
+                        pathname: '/'
+                    })
+                }
             })
             .catch(err => console.log(err));
     }

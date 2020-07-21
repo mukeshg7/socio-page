@@ -17,7 +17,13 @@ class FollowingPage extends Component {
         let path = this.state.thisPageUserId;
         Axios.get(`http://localhost:3000/following/${path}`, { withCredentials: true })
             .then(res => {
-                if(res.status === 200) {
+                if(res.status === 207) {
+                    this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if(res.status === 200) {
                     this.setState({
                         followingUsers: res.data.followingUsers,
                         isLoggedIn: true,
@@ -28,7 +34,7 @@ class FollowingPage extends Component {
                         });
                     }
                 } else {
-                    this.props.logoutUser();
+                    alert("Some error occured! Please refresh the page.")
                 }
             })
     }

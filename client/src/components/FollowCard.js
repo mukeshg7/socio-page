@@ -26,6 +26,11 @@ class FollowCard extends Component {
                             buttonText: 'Following',
                             isDisable: false,
                         })
+                    } else {
+                        alert("You are not LoggedIn!")
+                        this.props.history.push({
+                            pathname: `/login`,
+                        })
                     }
                 })
                 .catch(err => console.log(err));
@@ -40,6 +45,11 @@ class FollowCard extends Component {
                         this.setState({
                             buttonText: 'Follow',
                             isDisable: false,
+                        })
+                    } else {
+                        alert("You are not LoggedIn!")
+                        this.props.history.push({
+                            pathname: `/login`,
                         })
                     }
                 })

@@ -52,16 +52,28 @@ class Post extends Component {
                         likes: res.data.new,
                         isLiked: res.data.isLiked,
                     })
-                } else {
+                } else if(res.status === 203) {
                     alert("Post Not Available!")
-                }
+                } else {
+                    this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } 
             })
             .catch(err => console.log(err));
     }
     handleDelete = (postId) => {
         Axios.get(`http://localhost:3000/delete/${postId}`, {withCredentials: true})
             .then(res => {
-                if(res.status === 200) {
+                if(res.status === 207) {
+                    this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if (res.status === 200) {
                     this.setState({
                         showPost: false,
                     })
@@ -96,7 +108,7 @@ class Post extends Component {
                                 </div>
                                 <div className="col s10">
                                     <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
-                                    <div className="row"><div className="col s12"><p class="right">{post.createdAt.slice(0, 19)}</p></div></div>
+                                    <div className="row"><div className="col s12"><p className="right">{post.createdAt.slice(0, 19)}</p></div></div>
                                 </div>
                             </div>
                             <hr></hr>

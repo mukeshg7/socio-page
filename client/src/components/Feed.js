@@ -10,15 +10,22 @@ class Feed extends Component {
         message: 'Loading...'
     }
     componentDidMount() {
-        Axios.get('http://localhost:3000/feed')
+        Axios.get('http://localhost:3000/feed', {withCredentials: true})
             .then(res => {
-                this.setState({
-                    posts: res.data,
-                })
-                if(this.state.posts.length === 0) {
-                    this.setState({
-                        message: 'No Posts to show!',
+                if(res.status === 207) {
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
                     })
+                } else {
+                    this.setState({
+                        posts: res.data,
+                    })
+                    if(this.state.posts.length === 0) {
+                        this.setState({
+                            message: 'No Posts to show!',
+                        })
+                    }
                 }
             })
             .catch(err => console.log(err));

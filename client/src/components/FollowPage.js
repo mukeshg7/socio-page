@@ -15,7 +15,13 @@ class Follow extends Component {
     componentDidMount() {
         Axios.get('http://localhost:3000/followpage', { withCredentials: true })
             .then(res => {
-                if(res.status === 200) {
+                if(res.status === 207) {
+                    this.props.logoutUser();
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                } else if(res.status === 200) {
                     this.props.loginUser(res.data.userId, res.data.userName);
                     this.setState({
                         users: res.data.users,
@@ -27,7 +33,7 @@ class Follow extends Component {
                         })
                     }
                 } else {
-                    this.props.logoutUser();
+                    alert("Some error occured! Please refresh the page.")
                 }
             })
     }

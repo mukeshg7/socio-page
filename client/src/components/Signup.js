@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import axios from 'axios'
+import Axios from 'axios'
 
 class Signup extends Component {
     state = {
@@ -7,6 +7,18 @@ class Signup extends Component {
         userName: "",
         password: "",
         confirmPassword: "",
+    }
+    componentDidMount() {
+        Axios.get('http://localhost:3000/checkuser', {withCredentials: true})
+            .then(res => {
+                if(res.data.isLoggedIn) {
+                    this.props.loginUser(res.data.userId, res.data.userName);
+                    this.props.history.push({
+                        pathname: `/profile/${res.data.userId}`,
+                    })
+                }
+            })
+            .catch(err => console.log(err));
     }
     handleChange = (e) => {
         this.setState({
@@ -25,9 +37,14 @@ class Signup extends Component {
             followersCount: 0,
             followingCount: 0,
         }
-        axios.post('http://localhost:3000/signup', userData)
+        Axios.post('http://localhost:3000/signup', userData, {withCredentials: true})
             .then(res => {
-                if(res.data === 'Successfull Signup!') {
+                if(res.status === 201) {
+                    alert("User Already LoggedIn. Redirecting to Profile.")
+                    this.props.history.push({
+                        pathname: `/profile/${res.data.userId}`,
+                    })
+                } else if(res.data === 'Successfull Signup!') {
                     this.props.history.push('/');
                 } else {
                     alert(res.data);
