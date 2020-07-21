@@ -227,7 +227,7 @@ app.post('/login', checkLoginLogStatus, (req, res, next) => {
 
 app.get('/checkuser', (req, res) => {
     if(req.session.user) {
-        res.send({ isLoggedIn: true, userId: req.session.user._id, userName: req.session.user.userName });
+        res.send({ isLoggedIn: true, userId: req.session.user._id, userName: req.session.user.userName, userEmail: req.session.user.email, });
     } else {
         res.send({ isLoggedIn: false });
     }

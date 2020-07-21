@@ -7,3 +7,7 @@
 .postcard .post-body p {
     padding: 5px 10px;
 }
+
+.postcard span {
+    padding-left: 30px;
+}

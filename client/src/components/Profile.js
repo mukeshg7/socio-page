@@ -154,7 +154,6 @@ class Profile extends Component {
                             <div className="card">
                                 <div className="profile-btn-container">
                                     <button onClick={this.handleFollowers} className="waves-effect waves-light btn">{this.state.followersCount} Followers</button>
-                                
                                     <button onClick={this.handleFollowing} className="waves-effect waves-light btn">{this.state.followingCount} Following</button>
                                 </div>
                             </div>

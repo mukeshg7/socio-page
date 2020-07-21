@@ -96,7 +96,7 @@ class Post extends Component {
                                 </div>
                                 <div className="col s10">
                                     <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
-                                    <div className="row"><div className="col s12"><p class="right">{post.createdAt}</p></div></div>
+                                    <div className="row"><div className="col s12"><p class="right">{post.createdAt.slice(0, 19)}</p></div></div>
                                 </div>
                             </div>
                             <hr></hr>

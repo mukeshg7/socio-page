@@ -36,7 +36,7 @@ class Feed extends Component {
             );
     
         return(
-            <div className="container">
+            <div className="">
                 {postCards}
             </div>
         )
