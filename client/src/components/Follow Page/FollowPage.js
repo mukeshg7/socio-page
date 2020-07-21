@@ -42,8 +42,8 @@ class Follow extends Component {
         const list = users.length ? (
             users.map((user) => {
                 return (
-                    <div className="col l4 m6 s6">
-                        <FollowCard user={user} />
+                    <div className="col l4 m6 s6" key={user._id}>
+                        <FollowCard user={user} key={user._id} />
                     </div>
                 )
             })

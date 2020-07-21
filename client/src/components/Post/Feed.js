@@ -35,7 +35,7 @@ class Feed extends Component {
         const postCards = posts.length ? (
             posts.map((post) => {
                 return (
-                        <Post post={post} userName={this.state.userName} userId={this.state.userId} />
+                        <Post post={post} key={post._id} userName={this.state.userName} userId={this.state.userId} />
                     )
                 })
             ) : (

@@ -70,7 +70,7 @@ class FollowCard extends Component {
                             <Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link>
                         </div>
                     </div>
-                    <div class='btn-container'>
+                    <div className='btn-container'>
                         <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
                     </div>
                 </div>
