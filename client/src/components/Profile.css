@@ -1,22 +1,26 @@
 .profile {
     padding: 0px 0px;
 }
-h3{
+.profile h3{
     padding-left: 10px;
 }
-h4{
+.profile h4{
     margin: 0px;
 }
-.row {
+.profile .row {
     margin: 0px;
 }
-.info h4, .info div {
+.profile .info h4, .profile .info div {
     padding: 10px 5px;
+    display: block;
+    text-align: center;
+    margin: 0px auto;
+    padding: 10px;
 }
 .profileimage img{
     width: 180px;
-    height: 180px;
-    object-fit: fill;
+    height: 200px;
+    object-fit: contain;
 
     display: block;
     text-align: center;
