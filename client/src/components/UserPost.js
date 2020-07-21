@@ -40,7 +40,7 @@ class UserPost extends Component {
                 )
             })
         ) : (
-            <h4>{this.state.message}</h4>
+            <h4 className="center">{this.state.message}</h4>
         );
         const feed = this.state.isLoggedIn  ? (
             <div>
