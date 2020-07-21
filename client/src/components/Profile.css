@@ -13,7 +13,7 @@ h4{
 .info h4, .info div {
     padding: 10px 5px;
 }
-.image img{
+.profileimage img{
     width: 180px;
     height: 180px;
     object-fit: fill;
@@ -23,12 +23,12 @@ h4{
     margin: 0px auto;
     padding: 10px;
 }
-.profile .btn-container {
+.profile-btn-container {
     margin: 0px auto;
     display: flex;
 	justify-content: center;
 	align-content: center;
 }
-.btn-container button {
+.profile-btn-container button {
     margin: 0px auto;
 }

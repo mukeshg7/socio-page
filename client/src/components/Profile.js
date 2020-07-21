@@ -137,7 +137,7 @@ class Profile extends Component {
                             <div className="card">
                                 <div className="row">
                                     <div className="col l6 m12 s12">
-                                        <div className="image">
+                                        <div className="profileimage">
                                             <img src={img}></img>
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@ class Profile extends Component {
                             </div>
 
                             <div className="card">
-                                <div className="btn-container">
+                                <div className="profile-btn-container">
                                     <button onClick={this.handleFollowers} className="waves-effect waves-light btn">{this.state.followersCount} Followers</button>
                                 
                                     <button onClick={this.handleFollowing} className="waves-effect waves-light btn">{this.state.followingCount} Following</button>
