@@ -47,7 +47,7 @@ class Home extends Component {
                                 <div className="col l6 m6 s6">
                                     <h4><Link to={{ pathname: `/profile/${this.state.userId}` }}>{this.state.userName}</Link></h4>
                                     <p>{this.state.userEmail}</p>
-                                    <Link to='/addpost'><button class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></button></Link>
+                                    <Link to='/addpost'><button className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></button></Link>
                                 </div>
                             </div>
                         </div>
