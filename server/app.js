@@ -8,12 +8,15 @@ const session = require('express-session');
 const User = require('./models/user');
 const Post = require('./models/post');
 const e = require('express');
+const path = require('path');
 
 const app = express();
 
 
 //Passport config
 require('./passport')(passport);
+
+
 
 const dbUrl = "mongodb+srv://admin:pass123@socioapp-lcfq8.mongodb.net/socio-app?retryWrites=true&w=majority";
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
@@ -26,7 +29,7 @@ mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
     .catch(err => console.log(err));
 
 const corsOptions = {
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
     credentials: true,
 };
 // middleware
@@ -49,6 +52,8 @@ app.use(
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 app.get('/feed', checkProfileLogStatus, (req, res) => {
     Post.find().sort({ createdAt: -1})
@@ -356,3 +361,12 @@ app.post('/signup', async (req, res) => {
         }
     }
 })
+
+
+
+app.use(express.static('client/build'));
+
+app.use(function(req, res) {
+	res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
