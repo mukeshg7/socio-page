@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import Axios from 'axios'
 import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
+import img from '../assets/Pikachu.png'
+import './Post.css'
 
 class Post extends Component {
     state = {
@@ -88,7 +90,14 @@ class Post extends Component {
         const postBody = this.state.showPost ? (
                     <div className="post card" key={post._id}>
                         <div className="card-content">
-                            <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
+                            <div className="row">
+                                <div className="col s4">
+                                    <img src={img} />
+                                </div>
+                                <div className="col s8">
+                                    <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
+                                </div>
+                            </div>
                             <span className="right">{post.createdAt}</span>
                             <div><p>{post.body}</p></div>
                             <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
