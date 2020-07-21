@@ -88,7 +88,7 @@ class Post extends Component {
             <div></div>
         );
         const postBody = this.state.showPost ? (
-                    <div className="post card" key={post._id}>
+                    <div className="post card postcard" key={post._id}>
                         <div className="card-content">
                             <div className="row">
                                 <div className="col s4">

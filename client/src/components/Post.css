@@ -1,9 +1,9 @@
-img {
+.postcard img {
     width: 60px;
     height: 60px;
     object-fit: fill;
 }
 
-.post-body p {
+.postcard .post-body p {
     padding: 5px 10px;
 }
