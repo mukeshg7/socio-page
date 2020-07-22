@@ -67,7 +67,7 @@ class FollowCard extends Component {
                             <img src={img}></img>
                         </div>
                         <div className="col l8 m8 s12">
-                            <Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link>
+                            <Link to={{ pathname: `/profile/${this.props.user._id}` }}><span className="card-title">{user.userName}</span></Link>
                         </div>
                     </div>
                     <div className='btn-container'>
