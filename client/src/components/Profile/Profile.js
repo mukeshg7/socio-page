@@ -77,7 +77,7 @@ class Profile extends Component {
         this.getData();
     }
     handleEdit = () => {
-
+        alert('This feature is not available at the moment.')
     }
     handleFollowers = () => {
         if(this.state.followersButton === true) {
