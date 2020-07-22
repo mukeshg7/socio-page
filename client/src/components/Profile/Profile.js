@@ -39,6 +39,9 @@ class Profile extends Component {
                     })
                 } else if(res.status === 200) {
                     this.setState({
+                        showPostButton: false,
+                    });
+                    this.setState({
                         userId: res.data.userId,
                         userName: res.data.userName,
                         thisPageUserId: this.props.history.location.pathname.slice(9),
