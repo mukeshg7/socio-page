@@ -12,7 +12,7 @@ class Home extends Component {
         userId: this.props.userId,
         userEmail: '',
         userName: this.props.userName,
-        isLoggedIn: true,
+        isLoggedIn: false,
     }
     componentDidMount() {
         Axios.get('http://localhost:5000/checkuser', {withCredentials: true})
@@ -67,7 +67,7 @@ class Home extends Component {
                 </div>
             </div>
         ) : (
-            <h2>Please Login/Signup to view the posts!</h2>
+            <h2></h2>
         );
         return(
             <div>
