@@ -155,7 +155,7 @@ class Profile extends Component {
                                     <div className="col l6 m12 s12">
                                         <div className="info">
                                             <h4>{ this.state.thisPageUserName }</h4>
-                                            <h4>{ this.state.thisPageEmail }</h4>
+                                            <p>{ this.state.thisPageEmail }</p>
                                             { editButton }
                                         </div>
                                     </div>
