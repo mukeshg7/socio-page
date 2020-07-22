@@ -40,8 +40,8 @@ class FollowerPage extends Component {
         const list = followerUsers.length ? (
             followerUsers.map((user) => {
                 return (
-                    <div className="col xl6 l12 m6 s12">
-                        <FolloweringCard user={user} key={user.userId} userId={this.state.userId}/>
+                    <div className="col xl6 l12 m6 s12" key={user.userId} >
+                        <FolloweringCard user={user} userId={this.state.userId}/>
                     </div>
                 )
             })
