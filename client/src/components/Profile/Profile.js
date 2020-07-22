@@ -72,8 +72,10 @@ class Profile extends Component {
             .catch(err => console.log(err));
     }
     componentDidUpdate() {
-        if(this.state.thisPageUserId !== this.props.history.location.pathname.slice(9)) {
-            this.getData();
+        if(this.state.thisPageUserId) {
+            if(this.state.thisPageUserId !== this.props.history.location.pathname.slice(9)) {
+                this.getData();
+            }
         }
     }
     componentDidMount() {
