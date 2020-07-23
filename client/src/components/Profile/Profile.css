@@ -7,8 +7,8 @@
 .profile h4{
     margin: 0px;
 }
-.profile .row {
-    margin: 0px;
+.profile .xxx {
+    background-color: rgb(228, 226, 226);
 }
 .profile .info h4, .profile .info p, .profile .info div {
     padding: 10px 5px;
@@ -27,8 +27,13 @@
     margin: 0px auto;
     padding: 10px;
 }
+.profile-btn-card {
+    padding: 10px;
+}
 .profile-btn-container {
     margin: 0px auto;
+    padding: 10px;
+    background-color: rgb(228, 226, 226);
     display: flex;
 	justify-content: center;
 	align-content: center;

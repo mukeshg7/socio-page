@@ -219,24 +219,26 @@ class Profile extends Component {
                     <div className="row">
                         <div className="col l6 m12 s12">
                             <h3 className="center">Profile</h3>
-                            <div className="card">
-                                <div className="row">
-                                    <div className="col l6 m12 s12">
-                                        <div className="profileimage">
-                                            <img src={img}></img>
+                            <div className="card xxx">
+                                <div className="row yyy">
+                                    <div className="zzz">
+                                        <div className="col l6 m12 s12">
+                                            <div className="profileimage">
+                                                <img src={img}></img>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="col l6 m12 s12">
-                                        <div className="info">
-                                            <h4>{ this.state.thisPageUserName }</h4>
-                                            <p>{ this.state.thisPageEmail }</p>
-                                            { showBtns }
+                                        <div className="col l6 m12 s12">
+                                            <div className="info">
+                                                <h4>{ this.state.thisPageUserName }</h4>
+                                                <p>{ this.state.thisPageEmail }</p>
+                                                { showBtns }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="card">
+                            <div className="card profile-btn-card">
                                 <div className="profile-btn-container">
                                     <button onClick={this.handleFollowers} className="waves-effect waves-light btn">{this.state.followersCount} Followers</button>
                                     <button onClick={this.handleFollowing} className="waves-effect waves-light btn">{this.state.followingCount} Following</button>
