@@ -64,9 +64,9 @@ app.get('/feed', checkProfileLogStatus, (req, res) => {
 app.get('/post/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
-    User.findOne({ $and: [{'_id': id }, { following: { $elemMatch: { userId: userId } } }] })
-        .then(result => {
-            if(result || id === userId) {
+    User.findOne({ $and: [{'_id': id }, { followers: { $elemMatch: { userId: userId } } }] })
+        .then(result => {console.log(result);
+            if(result || userId === id) {
                 Post.find({'userId': id}).sort({ createdAt: -1})
                     .then(posts => {
                         res.status(200).send(posts)
