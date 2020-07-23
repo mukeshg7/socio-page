@@ -87,18 +87,14 @@ class FolloweringCard extends Component {
         const user = this.props.user;
         return (
             <div className="post card followeringCard">
-                <div className="card-content">
-                    <div className="row">
-                        <div className="col l4 m4 s12">
-                            <div className="image">
-                                <img src={img}></img>
-                            </div>
-                        </div>
-                        <div className="col l8 m8 s12">
-                            <Link to={{ pathname: `/profile/${this.props.user.userId}` }}><span className="card-title">{user.userName}</span></Link>
-                        </div>
+                <div className="row followering-card-top">
+                    <div className="followering-card-info"> 
+                        <div className="image"><img src={img}></img></div>
+                        <Link to={{ pathname: `/profile/${this.props.user.userId}` }}>{user.userName}</Link>
                     </div>
-                    <div className="btn-container">
+                </div>
+                <div className="row followering-card-footer">
+                    <div className='btn-container'>
                         <button onClick={this.handleFollowUnFollow} disabled={this.state.isDisable} className="waves-effect waves-light btn-small">{this.state.buttonText}</button>
                     </div>
                 </div>
