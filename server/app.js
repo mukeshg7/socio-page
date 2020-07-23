@@ -65,7 +65,7 @@ app.get('/post/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
     User.findOne({ $and: [{'_id': id }, { followers: { $elemMatch: { userId: userId } } }] })
-        .then(result => {console.log(result);
+        .then(result => {
             if(result || userId === id) {
                 Post.find({'userId': id}).sort({ createdAt: -1})
                     .then(posts => {
@@ -285,12 +285,20 @@ app.get('/checkfollowstatus/:id', checkProfileLogStatus, (req, res) => {
 
 app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
     const id = req.params.id.trim();
-    
+    const userId = req.session.user._id;
     User.findById(id, 'userName email followersCount followingCount')
         .then(user => {
-            res.status(200).send({ userId: req.session.user._id, userName: req.session.user.userName, 
-                thisPageUserName: user.userName, thisPageEmail: user.email, 
-                followersCount: user.followersCount, followingCount: user.followingCount});
+            let isFollow = false;
+            User.findOne({$and: [{ '_id': userId }, { following: {$elemMatch: { userId: id }} }]})
+                .then(result => {
+                    if(result) {
+                        isFollow = true;
+                    }
+                    res.status(200).send({ userId: userId, userName: req.session.user.userName, 
+                        thisPageUserName: user.userName, thisPageEmail: user.email, 
+                        followersCount: user.followersCount, followingCount: user.followingCount, isFollow: isFollow});
+                })
+                .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
 })

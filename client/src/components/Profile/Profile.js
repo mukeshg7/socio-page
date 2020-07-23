@@ -21,10 +21,16 @@ class Profile extends Component {
         followingCount: 0,
 
         isThisUser: false,
+        isFollow: false,
 
         followersButton: false,
         followingButton: false,
         showPostButton: false,
+
+        disableFollowBtn: false,
+        disableFollowingBtn: false,
+
+        gotData: false,
 
     }
     getData = () => {
@@ -52,6 +58,7 @@ class Profile extends Component {
                         followersButton: false,
                         followingButton: false,
                         showPostButton: true,
+                        isFollow: res.data.isFollow,
                     })
                     if(this.state.userId === this.state.thisPageUserId) {
                         this.setState({
@@ -68,8 +75,15 @@ class Profile extends Component {
                         pathname: '/login'
                     })
                 }
+                console.log("aaa");
+                this.setState({
+                    gotData: true,
+                })
             })
             .catch(err => console.log(err));
+    }
+    componentDidMount() {
+        this.getData();
     }
     componentDidUpdate() {
         if(this.state.thisPageUserId) {
@@ -78,9 +92,7 @@ class Profile extends Component {
             }
         }
     }
-    componentDidMount() {
-        this.getData();
-    }
+    
     handleEdit = () => {
         alert('This feature is not available at the moment.')
     }
@@ -108,15 +120,76 @@ class Profile extends Component {
             })
         }
     }
+    handleFollow = () => {
+        this.setState({
+            disableFollowBtn: true,
+            disableFollowingBtn: true,
+        })
+        const data = {
+            followUserId: this.state.thisPageUserId,
+            followUserName: this.state.thisPageUserName,
+        }
+        Axios.post('http://localhost:5000/follow', data, {withCredentials: true})
+            .then(res => {
+                if(res.status === 200) {
+                    this.setState({
+                        isFollow: true,
+                    });
+                    window.location.reload(true);
+                } else {
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                }
+            })
+            .catch(err => console.log(err));
+    }
+    handleUnFollow = () => {
+        this.setState({
+            disableFollowingBtn: true,
+            disableFollowBtn: true,
+        })
+        const data = {
+            unFollowUserId: this.state.thisPageUserId,
+            unFollowUserName: this.state.thisPageUserName,
+        };
+        Axios.post('http://localhost:5000/unfollow', data, {withCredentials: true})
+            .then(res => {
+                if(res.status === 200) {
+                    this.setState({
+                        isFollow: false,
+                    });
+                    window.location.reload(true);
+                } else {
+                    alert("You are not LoggedIn!")
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
+                }
+            })
+            .catch(err => console.log(err));
+    }
     render() {
         
         const thisPageUserId = this.state.thisPageUserId;
+
+        const followUnFollowBtn = this.state.isFollow ? (
+            <button onClick={this.handleUnFollow} disabled={this.state.disableFollowBtn} className="waves-effect waves-light btn">Following</button>
+        ) : (
+            <button onClick={this.handleFollow} disabled={this.state.disableFollowingBtn} className="waves-effect waves-light btn">Follow</button>
+        );
         const editButton = this.state.isThisUser ? (
                 <div>
                     <button onClick={this.handleEdit} className="waves-effect waves-light btn">Edit</button>
                 </div>
         ) : (
-                <div></div>
+                <div>{followUnFollowBtn}</div>
+        );
+        const showBtns = this.state.gotData ? (
+            <div>{editButton}</div>
+        ) : (
+            <div></div>
         );
         const followersList = this.state.followersButton ? (
             <div>
@@ -139,6 +212,7 @@ class Profile extends Component {
         ) : (
             <div></div>
         );
+        
         return (
             <div className="container">
                 <div className="profile">
@@ -156,7 +230,7 @@ class Profile extends Component {
                                         <div className="info">
                                             <h4>{ this.state.thisPageUserName }</h4>
                                             <p>{ this.state.thisPageEmail }</p>
-                                            { editButton }
+                                            { showBtns }
                                         </div>
                                     </div>
                                 </div>
