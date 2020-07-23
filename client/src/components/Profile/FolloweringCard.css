@@ -14,12 +14,16 @@
 .followering-card-info {
     display: flex;
 }
+.followering-card-top {
+    margin: 0px;
+}
 .followering-card-info a {
     font-size: 20px;
     padding-left: 5px;
     margin-top: 15px;;
 }
 .followeringCard .followering-card-top {
+    margin: 0px;
     padding: 10px;
 }
 .followeringCard .followering-card-info{
@@ -27,6 +31,7 @@
 }
 .followeringCard .followering-card-footer {
     padding: 0px 10px 10px 10px;
+    margin: 0px;
 }
 .followeringCard .btn-container {
     padding: 10px;
