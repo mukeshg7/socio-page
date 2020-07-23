@@ -6,33 +6,13 @@ import { login, logout } from '../../actions/action'
 
 class AddPost extends Component {
     state = {
-        userName: "",
+        userName: this.props.userName,
         body: "",
         likes: 0,
         isLoggedIn: false,
-        userId: "",
+        userId: this.props.userId,
     }
-    componentDidMount() {
-        Axios.get('http://localhost:5000/checkuser', {withCredentials: true})
-            .then(res => {
-                const isLoggedIn = res.data.isLoggedIn;
-                this.setState({
-                    isLoggedIn,
-                    userName: res.data.userName,
-                    userId: res.data.userId,
-                })
-                if(isLoggedIn) {
-                    this.props.loginUser(res.data.userId, res.data.userName);
-                } else {
-                    this.props.logoutUser();
-                    alert("You are not LoggedIn!")
-                    this.props.history.push({
-                        pathname: `/login`,
-                    })
-                }
-            })
-            .catch(err => console.log(err));
-    }
+    
     handleBody = (e) => {
         this.setState({
             body: e.target.value,
@@ -50,34 +30,32 @@ class AddPost extends Component {
         Axios.post('http://localhost:5000/addpost', post, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
-
-                } else {
+                    alert("You are not LoggedIn!")
+                    this.props.logoutUser();
                     this.props.history.push({
-                        pathname: '/'
+                        pathname: `/login`,
                     })
+                } else {
+                    window.location.reload(true);
                 }
             })
             .catch(err => console.log(err));
     }
     render() {
-        const body = this.state.isLoggedIn ? (
-            <div>
-                <h1 className="center">{this.state.userName} you can add your post here!</h1>
-                
-                <div className="row">
-                    <div className="input-field col s12">
-                        <label htmlFor="post">Post: </label>
-                        <textarea onChange={this.handleBody} className="materialize-textarea" id="post" data-length="120" required />
-                        <button onClick={this.handlePost} className="waves-effect waves-light btn">Post!</button>
-                    </div>
-                </div>
-            </div>
-        ) : (
-            <div></div>
-        );
+        
         return (
             <div className="container">
-                { body }
+                <div>
+                    <h5 className="center" style={{paddingTop: 20+'px'}}>Write something...</h5>
+                    
+                    <div className="row">
+                        <div className="input-field col s12">
+                            <label htmlFor="post">Post: </label>
+                            <textarea onChange={this.handleBody} className="materialize-textarea" id="post" data-length="120" required />
+                            <button onClick={this.handlePost} className="waves-effect waves-light btn">Post!</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -85,7 +63,6 @@ class AddPost extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loginUser:(userId, userName) => dispatch(login(userId, userName)),
         logoutUser: () => dispatch(logout()),
     }
 }

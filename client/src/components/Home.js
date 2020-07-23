@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
 import Feed from './Post/Feed'
 import './Home.css'
+import AddPost from './Post/AddPost'
 import img from '../assets/Pikachu.png'
 
 class Home extends Component {
@@ -28,6 +29,9 @@ class Home extends Component {
                     this.props.loginUser(res.data.userId, res.data.userName);
                 } else {
                     this.props.logoutUser();
+                    this.props.history.push({
+                        pathname: `/login`,
+                    })
                 }
             })
             .catch(err => console.log(err));
@@ -53,6 +57,7 @@ class Home extends Component {
                                 </div>
                             </div>
                         </div>
+                        <AddPost userId={this.state.userId} userName={this.state.userName} />
                     </div>
     
                     <div className="col l6 m12 s12">
