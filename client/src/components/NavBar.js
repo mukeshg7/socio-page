@@ -24,7 +24,6 @@ const handleLogout = (props) => {
 function NavBar (props) {
     const Buttons = props.isLoggedIn ? (
             <div>
-                <li><Link to="/addpost">Add Post!</Link></li>
                 <li><Link to="/followpage">Follow</Link></li>
                 <li><Link to={{ pathname: `/profile/${props.userId}` }}>Profile</Link></li>
                 <li><a onClick={() => handleLogout(props)}>Logout</a></li>

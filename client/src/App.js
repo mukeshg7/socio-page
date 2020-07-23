@@ -18,7 +18,6 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile/:userId" component={Profile} />
-        <Route path="/addpost" component={AddPost} />
         <Route path='/followpage' component={FollowPage} />
       </div>
     </BrowserRouter>
