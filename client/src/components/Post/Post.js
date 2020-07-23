@@ -116,7 +116,7 @@ class Post extends Component {
                             </div>
                         </div>
                         <div className="row post-body">
-                            <div className="row post-body"><p>{post.body}</p></div>
+                            <p class="post-body-text">{post.body}</p>
                         </div>
                         <div className="row post-footer">
                             <div className="post-btn-container">
