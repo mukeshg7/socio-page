@@ -63,9 +63,18 @@ app.get('/feed', checkProfileLogStatus, (req, res) => {
 
 app.get('/post/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
-    Post.find({'userId': id}).sort({ createdAt: -1})
-        .then(posts => {
-            res.status(200).send(posts)
+    const userId = req.session.user._id;
+    User.findOne({ $and: [{'_id': id }, { following: { $elemMatch: { userId: userId } } }] })
+        .then(result => {
+            if(result || id === userId) {
+                Post.find({'userId': id}).sort({ createdAt: -1})
+                    .then(posts => {
+                        res.status(200).send(posts)
+                    })
+                    .catch(err => console.log(err));
+            } else {
+                res.status(202).send({msg: "Not follow"});
+            }
         })
         .catch(err => console.log(err));
 })

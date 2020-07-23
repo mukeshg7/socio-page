@@ -11,6 +11,7 @@ class UserPost extends Component {
         posts: [],
         isLoggedIn: true,
         message: 'Loading...',
+        showPost: true,
     }
     componentDidMount() {
         Axios.get(`http://localhost:5000/post/${this.state.thisPageUserId}`, {withCredentials: true})
@@ -20,6 +21,10 @@ class UserPost extends Component {
                     alert("You are not LoggedIn!")
                     this.props.history.push({
                         pathname: `/login`,
+                    })
+                } else if(res.status === 202) {
+                    this.setState({
+                        showPost: false,
                     })
                 } else if (res.status === 200) {
                     this.setState({
@@ -39,6 +44,11 @@ class UserPost extends Component {
     }
     render() {
         const posts = this.state.posts;
+        const message = this.state.showPost ? (
+            <h4 className="center">{this.state.message}</h4>
+        ) : (
+            <h4 className="center">Follow the person to view their Posts!</h4>
+        );
         const body = posts.length ? (
             posts.map(post => {
                 return (
@@ -46,7 +56,7 @@ class UserPost extends Component {
                 )
             })
         ) : (
-            <h4 className="center">{this.state.message}</h4>
+            <div>{message}</div>
         );
         const feed = this.state.isLoggedIn  ? (
             <div>
