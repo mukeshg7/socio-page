@@ -38,7 +38,7 @@ function NavBar (props) {
         <div>
             <nav>
                 <div className="nav-wrapper">
-                    <Link to="/" className="brand-logo" style={{padding: 0+'px' + ' ' + 10+'px',}}>SocioPage</Link>
+                    <Link to="/" className="brand-logo left" style={{padding: 0+'px' + ' ' + 10+'px',}}>SocioPage</Link>
                     <ul id="nav-mobile" className="right">
                         {Buttons}
                     </ul>
