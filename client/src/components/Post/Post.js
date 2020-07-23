@@ -100,22 +100,31 @@ class Post extends Component {
         );
         const postBody = this.state.showPost ? (
                     <div className="post card postcard" key={post._id}>
-                        <div className="card-content">
-                            <div className="row">
-                                <div className="col s2">
+
+                        <div className="row post-top">
+                            <div className="col s6">
+                                <div className="post-info">
                                     <img src={img} />
-                                </div>
-                                <div className="col s10">
-                                    <span className="card-title"><Link to={{ pathname: `/profile/${post.userId}` }}>{post.userName}</Link></span>
-                                    <div className="row"><div className="col s12"><p className="right">{post.createdAt.slice(0, 19)}</p></div></div>
+                                    <Link to={{ pathname: `/profile/${post.userId}` }}><div><p>{post.userName}</p></div></Link>
                                 </div>
                             </div>
-                            <hr></hr>
-                            <div className="row post-body"><p>{post.body}</p></div>
-                            <hr></hr>
-                            <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
-                            {deleteButton}
+                            <div className="col s6">
+                                <br></br>
+                                <div className="right" >{post.createdAt.slice(11, 16)}</div>
+                                <br></br>
+                                <div className="right" >{post.createdAt.slice(0, 10)}</div>
+                            </div>
                         </div>
+                        <div className="row post-body">
+                            <div className="row post-body"><p>{post.body}</p></div>
+                        </div>
+                        <div className="row post-footer">
+                            <div className="post-btn-container">
+                                <button onClick={() => this.handleLike(post._id, this.state.userID)} className="waves-effect waves-light btn-small">{this.state.likes}  {likeButton}</button>
+                                {deleteButton}
+                            </div>
+                        </div>
+
                     </div>
         ) : (
             <div></div>

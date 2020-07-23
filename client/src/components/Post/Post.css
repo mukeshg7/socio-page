@@ -1,13 +1,41 @@
 .postcard img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 80px;
     object-fit: fill;
+    border-radius: 8px;
+    position: relative;
+    float: left;
+    margin: auto;
 }
-
+.postcard {
+    padding: 10px;
+}
+.post-top {
+    padding: 10px 0px;
+}
+.postcard .row {
+    margin: 0px;
+}
+.post-info div p {
+    font-size: 30px;
+    font-weight: 500;
+    margin: 0px;
+    padding-left: 80px;
+}
 .postcard .post-body p {
+    background-color: rgb(250, 248, 248);
     padding: 5px 10px;
+    font-size: 20px;
+    font-family: sans-serif;
 }
 
-.postcard span {
-    padding-left: 30px;
+.post-btn-container{
+    padding: 15px;
+}
+
+.post-top {
+    background-color: rgb(255, 226, 226);
+}
+.post-footer {
+    background-color: rgb(228, 226, 226);
 }

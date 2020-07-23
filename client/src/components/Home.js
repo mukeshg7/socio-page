@@ -35,19 +35,21 @@ class Home extends Component {
     render () {
         const body = this.state.isLoggedIn ? (
             <div className="home">
-                <h1 className="center">Welcome to SocioPage!</h1>
                 <div className="row">
                 
                     <div className="col l3 m7 s12">
                         <div className="card profilecard">
                             <div className="row">
-                                <div className="col l6 m6 s6">
-                                    <img src={img} style={{width: 100+'%', height: 100+'%', }}></img>
+                                <div className="col l6 m6 s6 IMG">
+                                    <div className="image">
+                                        <img src={img} style={{width: 100+'%', height: 100+'%', }}></img>
+                                    </div>
                                 </div>
-                                <div className="col l6 m6 s6">
-                                    <h4><Link to={{ pathname: `/profile/${this.state.userId}` }}>{this.state.userName}</Link></h4>
-                                    <p>{this.state.userEmail}</p>
-                                    <Link to='/addpost'><button className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></button></Link>
+                                <div className="col l6 m6 s6 INFO">
+                                    <div className="info">
+                                        <h5><Link to={{ pathname: `/profile/${this.state.userId}` }}>{this.state.userName}</Link></h5>
+                                        <p>{this.state.userEmail}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -58,9 +60,8 @@ class Home extends Component {
                     </div>
 
                     <div className="col l3 m5 s12">
-                        <h4>Search</h4>
                         <div className="card">
-                            <p>aaa</p>
+                            <h4>Search</h4>
                         </div>
                     </div>
     
