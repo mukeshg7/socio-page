@@ -6,6 +6,7 @@ import { login, logout } from '../actions/action'
 import Feed from './Post/Feed'
 import './Home.css'
 import AddPost from './Post/AddPost'
+import Search from './Search'
 import img from '../assets/Pikachu.png'
 
 class Home extends Component {
@@ -65,9 +66,7 @@ class Home extends Component {
                     </div>
 
                     <div className="col l3 m5 s12">
-                        <div className="card">
-                            <h4>Search</h4>
-                        </div>
+                            <Search />
                     </div>
     
                 </div>

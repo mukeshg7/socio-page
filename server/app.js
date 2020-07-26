@@ -61,6 +61,12 @@ app.get('/feed', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
+app.get('/users', checkProfileLogStatus, (req, res) => {
+    User.find({}, {'_id': 1, 'userName': 1})
+        .then(result => res.status(200).send(result))
+        .catch(err => console.log(err));
+})
+
 app.get('/post/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
