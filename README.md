@@ -1,10 +1,11 @@
 # Micro-Blogging-App MERN Stack
 ## Features
-1. Create account and Login
-2. Write posts(micro-blogs)
-3. Like and Unlike posts
-4. Follow and Unfollow other users
-5. View posts of users you follow
+1. Create account
+2. Login & Logout with proper authentication using Sessions
+3. Write posts(micro-blogs)
+4. View posts of users you follow
+5. Like and Unlike posts(your's or your following's)
+6. Follow and Unfollow other users
 
 ## Live Demo
 https://socio-page.herokuapp.com/
