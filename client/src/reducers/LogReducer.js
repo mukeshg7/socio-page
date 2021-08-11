@@ -1,7 +1,7 @@
 const iniState = {
     isLoggedIn: false,
     userId: "",
-    userNAme: "",
+    userName: "",
 }
 
 const logReducer = (state = iniState, action) => {
