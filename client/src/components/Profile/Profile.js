@@ -64,12 +64,12 @@ class Profile extends Component {
                         this.setState({
                             isThisUser: true,
                         })
-                        this.props.loginUser(this.state.userId, this.state.userName);
                     } else {
                         this.setState({
                             isThisUser: false,
                         })
                     }
+                    this.props.loginUser(this.state.userId, this.state.userName);
                 } else {
                     this.props.history.push({
                         pathname: '/login'
